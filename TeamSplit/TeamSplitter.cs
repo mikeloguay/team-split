@@ -17,7 +17,7 @@ public class TeamSplitter : ITeamSplitter
             new Team
             {
                 Name = teamName2,
-                Players = [..players.Skip(players.Count).Take(players.Count / 2)]
+                Players = [..players.Skip(players.Count / 2).Take(players.Count / 2)]
             }
         );
     }
