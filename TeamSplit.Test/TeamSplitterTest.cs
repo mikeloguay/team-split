@@ -64,7 +64,21 @@ public class TeamSplitterTest
     }
 
     [Fact]
-    public void HappyPath_GenerateAllPossibleTeams_OK()
+    public void ThreePlayersBy2_GenerateAllPossibleTeams_3()
+    {
+        List<Player> players =
+        [
+            new Player { Name = "Canijo", Level = 100},
+            new Player { Name = "Ale", Level = 50},
+            new Player { Name = "Antonio", Level = 50},
+        ];
+
+        HashSet<Team> teams = _teamSplitter.GenerateAllPossibleTeams(players, 2);
+        Assert.Equal(3, teams.Count);
+    }
+
+    [Fact]
+    public void FourPlayersBy2_GenerateAllPossibleTeams_6()
     {
         List<Player> players =
         [
@@ -74,7 +88,23 @@ public class TeamSplitterTest
             new Player { Name = "Roberto", Level = 10},
         ];
 
-        List<Team> teams = _teamSplitter.GenerateAllPossibleTeams(players, 2);
+        HashSet<Team> teams = _teamSplitter.GenerateAllPossibleTeams(players, 2);
         Assert.Equal(6, teams.Count);
+    }
+
+    [Fact]
+    public void FivePlayersBy3_GenerateAllPossibleTeams_6()
+    {
+        List<Player> players =
+        [
+            new Player { Name = "Canijo", Level = 100},
+            new Player { Name = "Ale", Level = 50},
+            new Player { Name = "Antonio", Level = 50},
+            new Player { Name = "Roberto", Level = 10},
+            new Player { Name = "Tito", Level = 10},
+        ];
+
+        HashSet<Team> teams = _teamSplitter.GenerateAllPossibleTeams(players, 3);
+        Assert.Equal(10, teams.Count);
     }
 }

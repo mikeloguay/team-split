@@ -25,31 +25,29 @@ public class TeamSplitter : ITeamSplitter
 
     private List<Versus> GenerateAllVersus(List<Player> players, int numPlayersPerTeam)
     {
-        List<Team> allPossibleTeams = GenerateAllPossibleTeams(players, numPlayersPerTeam);
+        HashSet<Team> allPossibleTeams = GenerateAllPossibleTeams(players, numPlayersPerTeam);
         return CompleteWithRivals(allPossibleTeams, players, numPlayersPerTeam);
     }
 
-    public List<Team> GenerateAllPossibleTeams(List<Player> players, int numPlayersPerTeam)
+    public HashSet<Team> GenerateAllPossibleTeams(List<Player> players, int numPlayersPerTeam)
     {
         if (numPlayersPerTeam == 0) return [];
         if (numPlayersPerTeam == 1) return [.. players.Select(p => new Team { Players = [p] })];
 
-        List<Team> result = [];
+        HashSet<Team> result = [];
 
-        var firstPlayer = players[0];
-        players.RemoveAt(0);
-
-        List<Team> allPossibleTeams = GenerateAllPossibleTeams(players, numPlayersPerTeam - 1);
-
-        foreach (var team in allPossibleTeams)
+        for (int i = 0; i < players.Count; i++)
         {
-            result.Add(team.AddPlayer(firstPlayer));
+            var currentPlayer = players[i];
+            List<Player> playersReduced = [.. players.Where(p => p != currentPlayer)];
+            HashSet<Team> allPossibleTeams = GenerateAllPossibleTeams(playersReduced, numPlayersPerTeam - 1);
+            result.UnionWith(allPossibleTeams.Select(t => new Team(t.AddPlayer(currentPlayer))));
         }
 
         return result;
     }
 
-    private List<Versus> CompleteWithRivals(List<Team> allPossibleTeams, List<Player> players, int numPlayersPerTeam)
+    private List<Versus> CompleteWithRivals(HashSet<Team> allPossibleTeams, List<Player> players, int numPlayersPerTeam)
     {
         throw new NotImplementedException();
     }
