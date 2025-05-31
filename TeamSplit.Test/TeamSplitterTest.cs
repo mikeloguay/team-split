@@ -33,11 +33,11 @@ public class TeamSplitterTest
             new Player { Name = "Dani", Level = 10},
         ];
 
-        var (team1, team2) = _teamSplitter.Split(players, "Team A", "Team B");
-        Assert.Equal("Team A", team1.Name);
-        Assert.Equal("Team B", team2.Name);
-        Assert.Equal(2, team1.Players.Count);
-        Assert.Equal(2, team2.Players.Count);
+        Versus teamsCombination = _teamSplitter.Split(players, "Team A", "Team B");
+        Assert.Equal("Team A", teamsCombination.Team1.Name);
+        Assert.Equal("Team B", teamsCombination.Team2.Name);
+        Assert.Equal(2, teamsCombination.Team1.Players.Count);
+        Assert.Equal(2, teamsCombination.Team2.Players.Count);
     }
 
     [Fact]
@@ -51,13 +51,30 @@ public class TeamSplitterTest
             new Player { Name = "Roberto", Level = 10},
         ];
 
-        var (team1, team2) = _teamSplitter.Split(players, "Team A", "Team B");
-        Assert.Equal("Team A", team1.Name);
-        Assert.Equal(2, team1.Players.Count);
-        Assert.Equal("Team B", team2.Name);
-        Assert.Equal(2, team2.Players.Count);
+        Versus teamsCombination = _teamSplitter.Split(players, "Team A", "Team B");
+        Assert.Equal("Team A", teamsCombination.Team1.Name);
+        Assert.Equal(2, teamsCombination.Team1.Players.Count);
+        Assert.Equal("Team B", teamsCombination.Team2.Name);
+        Assert.Equal(2, teamsCombination.Team2.Players.Count);
 
-        Team canijoTeam = team1.Players.Any(p => p.Name == "Canijo") ? team1 : team2;
+        Team canijoTeam = teamsCombination.Team1.Players.Any(p => p.Name == "Canijo") ?
+            teamsCombination.Team1 :
+            teamsCombination.Team2;
         Assert.Contains(canijoTeam.Players, p => p.Name == "Roberto");
+    }
+
+    [Fact]
+    public void HappyPath_GenerateAllPossibleTeams_OK()
+    {
+        List<Player> players =
+        [
+            new Player { Name = "Canijo", Level = 100},
+            new Player { Name = "Ale", Level = 50},
+            new Player { Name = "Antonio", Level = 50},
+            new Player { Name = "Roberto", Level = 10},
+        ];
+
+        List<Team> teams = _teamSplitter.GenerateAllPossibleTeams(players, 2);
+        Assert.Equal(6, teams.Count);
     }
 }
