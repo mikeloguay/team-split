@@ -4,15 +4,7 @@ namespace TeamSplit;
 
 public class TeamSplitter : ITeamSplitter
 {
-    public Versus BestSplit(HashSet<Player> players)
-    {
-        ValidatePlayers(players);
-        HashSet<Versus> allPossibleVersus = GenerateAllVersus(players, players.Count / 2);
-
-        return allPossibleVersus
-            .OrderBy(v => v.LevelDiff)
-            .First();  
-    }
+    public Versus BestSplit(HashSet<Player> players) => TopSplits(players, 1).First();
 
     public HashSet<Versus> TopSplits(HashSet<Player> players, int numSplits)
     {
@@ -26,10 +18,7 @@ public class TeamSplitter : ITeamSplitter
 
     private void ValidatePlayers(HashSet<Player> players)
     {
-        if (players.Count % 2 != 0)
-        {
-            throw new ArgumentException("The number of players must be even to split into two teams.");
-        }
+        if (players.Count % 2 != 0) throw new ArgumentException("Number of players must be even");
     }
 
     private HashSet<Versus> GenerateAllVersus(HashSet<Player> players, int numPlayersPerTeam)
@@ -40,7 +29,7 @@ public class TeamSplitter : ITeamSplitter
 
     public HashSet<Team> GenerateAllPossibleTeams(HashSet<Player> players, int numPlayersPerTeam)
     {
-        if (numPlayersPerTeam == 0) return [];
+        //if (numPlayersPerTeam == 0) return [];
         if (numPlayersPerTeam == 1) return [.. players.Select(p => new Team { Players = [p] })];
 
         HashSet<Team> result = [];
