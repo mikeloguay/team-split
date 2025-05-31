@@ -15,5 +15,5 @@ public class Player : IEquatable<Player>
         HashCode.Combine(Name, Level);
         
     public override string ToString() => $"{Name}";
-    public string ToStringWIthLevek() => $"{Name} ({Level})";
+    public string ToStringWithLevel() => $"{Name} ({Level})";
 }

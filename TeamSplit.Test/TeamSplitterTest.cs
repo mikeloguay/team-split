@@ -105,7 +105,7 @@ public class TeamSplitterTest
     }
 
     [Fact]
-    public void EasySplit_Top3Splits_AscendingDiffs()
+    public void EasySplit_Top6Splits_AscendingDiffs()
     {
         HashSet<Player> players =
         [
@@ -115,7 +115,7 @@ public class TeamSplitterTest
             new Player { Name = "Roberto", Level = 10},
         ];
 
-        HashSet<Versus> versusList = _teamSplitter.TopSplits(players, 3);
+        HashSet<Versus> versusList = _teamSplitter.TopSplits(players, 6);
         Assert.Equal([..versusList.OrderBy(v => v.LevelDiff)], versusList);
     }
 }
