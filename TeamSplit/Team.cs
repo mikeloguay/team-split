@@ -2,14 +2,13 @@ namespace TeamSplit;
 
 public class Team : IEquatable<Team>
 {
-    public Team(Team other)
-    {
-        Players = [.. other.Players];
-    }
+    public Team(Team other) { Players = [.. other.Players]; }
+
+    public Team(HashSet<Player> players) { Players = [.. players]; }
 
     public Team() { }
 
-    public List<Player> Players { get; init; } = [];
+    public HashSet<Player> Players { get; init; } = [];
     public int Level => Players.Sum(p => p.Level);
 
     public Team AddPlayer(Player player)
