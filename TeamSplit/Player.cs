@@ -9,8 +9,11 @@ public class Player : IEquatable<Player>
         other is not null &&
         Name == other.Name &&
         Level == other.Level;
-        
+
     public override bool Equals(object? obj) => Equals((Player?)obj);
     public override int GetHashCode() =>
         HashCode.Combine(Name, Level);
+        
+    public override string ToString() => $"{Name}";
+    public string ToStringWIthLevek() => $"{Name} ({Level})";
 }

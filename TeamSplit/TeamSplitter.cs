@@ -4,15 +4,24 @@ namespace TeamSplit;
 
 public class TeamSplitter : ITeamSplitter
 {
-    public Versus Split(HashSet<Player> players)
+    public Versus BestSplit(HashSet<Player> players)
     {
         ValidatePlayers(players);
-
         HashSet<Versus> allPossibleVersus = GenerateAllVersus(players, players.Count / 2);
 
         return allPossibleVersus
             .OrderBy(v => v.LevelDiff)
             .First();  
+    }
+
+    public HashSet<Versus> TopSplits(HashSet<Player> players, int numSplits)
+    {
+        ValidatePlayers(players);
+        HashSet<Versus> allPossibleVersus = GenerateAllVersus(players, players.Count / 2);
+
+        return [.. allPossibleVersus
+            .OrderBy(v => v.LevelDiff)
+            .Take(numSplits)];
     }
 
     private void ValidatePlayers(HashSet<Player> players)

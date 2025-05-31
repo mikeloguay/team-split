@@ -7,6 +7,9 @@ public class Versus
     public int LevelDiff => Math.Abs(Team1.Level - Team2.Level);
 
     public override string ToString() => $"Con petos: {Team1}{Environment.NewLine}"
+        + $"Sin petos: {Team2}{Environment.NewLine}";
+
+    public string ToStringWithLevelDiff() => $"Con petos: {Team1}{Environment.NewLine}"
         + $"Sin petos: {Team2}{Environment.NewLine}"
         + $"Diferencia de nivel: {LevelDiff}";
 }

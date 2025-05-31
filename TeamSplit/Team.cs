@@ -18,7 +18,7 @@ public class Team : IEquatable<Team>
         return this;
     }
 
-    public override string ToString() => $"[{string.Join(", ", Players.Select(p => p.Name))}]";
+    public override string ToString() => $"[{string.Join(", ", Players.Select(p => p.ToString()))}]";
 
     public bool Equals(Team? other)
     {

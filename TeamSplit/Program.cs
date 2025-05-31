@@ -15,6 +15,10 @@ List<Player> players =
 ];
 
 ITeamSplitter teamSplitter = new TeamSplitter();
-Versus versus = teamSplitter.Split([.. players]);
-
-Console.WriteLine(versus);
+int numSplits = 3;
+HashSet<Versus> versuses = teamSplitter.TopSplits([.. players], numSplits);
+Console.WriteLine($"{numSplits} Posibles opciones:");
+Console.WriteLine("----------------------------------");
+Console.WriteLine();
+Console.WriteLine(string.Join($"{Environment.NewLine}{Environment.NewLine}",
+    versuses.Select(v => v.ToString())));

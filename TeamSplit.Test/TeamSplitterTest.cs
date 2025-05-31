@@ -19,7 +19,7 @@ public class TeamSplitterTest
             new Player { Name = "Antonio", Level = 10},
         ];
 
-        var exception = Assert.Throws<ArgumentException>(() => _teamSplitter.Split(players));
+        var exception = Assert.Throws<ArgumentException>(() => _teamSplitter.BestSplit(players));
     }
 
     [Fact]
@@ -33,7 +33,7 @@ public class TeamSplitterTest
             new Player { Name = "Dani", Level = 10},
         ];
 
-        Versus teamsCombination = _teamSplitter.Split(players);
+        Versus teamsCombination = _teamSplitter.BestSplit(players);
         Assert.Equal(2, teamsCombination.Team1.Players.Count);
         Assert.Equal(2, teamsCombination.Team2.Players.Count);
     }
@@ -49,7 +49,7 @@ public class TeamSplitterTest
             new Player { Name = "Roberto", Level = 10},
         ];
 
-        Versus teamsCombination = _teamSplitter.Split(players);
+        Versus teamsCombination = _teamSplitter.BestSplit(players);
         Assert.Equal(2, teamsCombination.Team1.Players.Count);
         Assert.Equal(2, teamsCombination.Team2.Players.Count);
 
@@ -102,5 +102,20 @@ public class TeamSplitterTest
 
         HashSet<Team> teams = _teamSplitter.GenerateAllPossibleTeams(players, 3);
         Assert.Equal(10, teams.Count);
+    }
+
+    [Fact]
+    public void EasySplit_Top3Splits_AscendingDiffs()
+    {
+        HashSet<Player> players =
+        [
+            new Player { Name = "Canijo", Level = 100},
+            new Player { Name = "Ale", Level = 50},
+            new Player { Name = "Antonio", Level = 50},
+            new Player { Name = "Roberto", Level = 10},
+        ];
+
+        HashSet<Versus> versusList = _teamSplitter.TopSplits(players, 3);
+        Assert.Equal([..versusList.OrderBy(v => v.LevelDiff)], versusList);
     }
 }
