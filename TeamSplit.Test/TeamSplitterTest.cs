@@ -12,20 +12,20 @@ public class TeamSplitterTest
     [Fact]
     public void OddNumPlayer_Split_Error()
     {
-        List<Player> players =
+        HashSet<Player> players =
         [
             new Player { Name = "Miki", Level = 10},
             new Player { Name = "Ale", Level = 10},
             new Player { Name = "Antonio", Level = 10},
         ];
 
-        var exception = Assert.Throws<ArgumentException>(() => _teamSplitter.Split(players, "Team A", "Team B"));
+        var exception = Assert.Throws<ArgumentException>(() => _teamSplitter.Split(players));
     }
 
     [Fact]
     public void EvenNumPlayer_Split_OK()
     {
-        List<Player> players =
+        HashSet<Player> players =
         [
             new Player { Name = "Miki", Level = 10},
             new Player { Name = "Ale", Level = 10},
@@ -33,9 +33,7 @@ public class TeamSplitterTest
             new Player { Name = "Dani", Level = 10},
         ];
 
-        Versus teamsCombination = _teamSplitter.Split(players, "Team A", "Team B");
-        Assert.Equal("Team A", teamsCombination.Team1.Name);
-        Assert.Equal("Team B", teamsCombination.Team2.Name);
+        Versus teamsCombination = _teamSplitter.Split(players);
         Assert.Equal(2, teamsCombination.Team1.Players.Count);
         Assert.Equal(2, teamsCombination.Team2.Players.Count);
     }
@@ -43,7 +41,7 @@ public class TeamSplitterTest
     [Fact]
     public void EasySplit_Split_OK()
     {
-        List<Player> players =
+        HashSet<Player> players =
         [
             new Player { Name = "Canijo", Level = 100},
             new Player { Name = "Ale", Level = 50},
@@ -51,10 +49,8 @@ public class TeamSplitterTest
             new Player { Name = "Roberto", Level = 10},
         ];
 
-        Versus teamsCombination = _teamSplitter.Split(players, "Team A", "Team B");
-        Assert.Equal("Team A", teamsCombination.Team1.Name);
+        Versus teamsCombination = _teamSplitter.Split(players);
         Assert.Equal(2, teamsCombination.Team1.Players.Count);
-        Assert.Equal("Team B", teamsCombination.Team2.Name);
         Assert.Equal(2, teamsCombination.Team2.Players.Count);
 
         Team canijoTeam = teamsCombination.Team1.Players.Any(p => p.Name == "Canijo") ?
@@ -66,7 +62,7 @@ public class TeamSplitterTest
     [Fact]
     public void ThreePlayersBy2_GenerateAllPossibleTeams_3()
     {
-        List<Player> players =
+        HashSet<Player> players =
         [
             new Player { Name = "Canijo", Level = 100},
             new Player { Name = "Ale", Level = 50},
@@ -80,7 +76,7 @@ public class TeamSplitterTest
     [Fact]
     public void FourPlayersBy2_GenerateAllPossibleTeams_6()
     {
-        List<Player> players =
+        HashSet<Player> players =
         [
             new Player { Name = "Canijo", Level = 100},
             new Player { Name = "Ale", Level = 50},
@@ -95,7 +91,7 @@ public class TeamSplitterTest
     [Fact]
     public void FivePlayersBy3_GenerateAllPossibleTeams_6()
     {
-        List<Player> players =
+        HashSet<Player> players =
         [
             new Player { Name = "Canijo", Level = 100},
             new Player { Name = "Ale", Level = 50},

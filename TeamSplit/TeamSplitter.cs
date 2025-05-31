@@ -4,18 +4,18 @@ namespace TeamSplit;
 
 public class TeamSplitter : ITeamSplitter
 {
-    public Versus Split(List<Player> players, string teamName1, string teamName2)
+    public Versus Split(HashSet<Player> players)
     {
         ValidatePlayers(players);
 
-        List<Versus> allPossibleVersus = GenerateAllVersus(players, 5);
+        HashSet<Versus> allPossibleVersus = GenerateAllVersus(players, players.Count / 2);
 
         return allPossibleVersus
             .OrderBy(v => v.LevelDiff)
             .First();  
     }
 
-    private void ValidatePlayers(List<Player> players)
+    private void ValidatePlayers(HashSet<Player> players)
     {
         if (players.Count % 2 != 0)
         {
@@ -23,13 +23,13 @@ public class TeamSplitter : ITeamSplitter
         }
     }
 
-    private List<Versus> GenerateAllVersus(List<Player> players, int numPlayersPerTeam)
+    private HashSet<Versus> GenerateAllVersus(HashSet<Player> players, int numPlayersPerTeam)
     {
         HashSet<Team> allPossibleTeams = GenerateAllPossibleTeams(players, numPlayersPerTeam);
         return CompleteWithRivals(allPossibleTeams, players, numPlayersPerTeam);
     }
 
-    public HashSet<Team> GenerateAllPossibleTeams(List<Player> players, int numPlayersPerTeam)
+    public HashSet<Team> GenerateAllPossibleTeams(HashSet<Player> players, int numPlayersPerTeam)
     {
         if (numPlayersPerTeam == 0) return [];
         if (numPlayersPerTeam == 1) return [.. players.Select(p => new Team { Players = [p] })];
@@ -38,8 +38,8 @@ public class TeamSplitter : ITeamSplitter
 
         for (int i = 0; i < players.Count; i++)
         {
-            var currentPlayer = players[i];
-            List<Player> playersReduced = [.. players.Where(p => p != currentPlayer)];
+            var currentPlayer = players.ElementAt(i);
+            HashSet<Player> playersReduced = [.. players.Where(p => p != currentPlayer)];
             HashSet<Team> allPossibleTeams = GenerateAllPossibleTeams(playersReduced, numPlayersPerTeam - 1);
             result.UnionWith(allPossibleTeams.Select(t => new Team(t.AddPlayer(currentPlayer))));
         }
@@ -47,8 +47,17 @@ public class TeamSplitter : ITeamSplitter
         return result;
     }
 
-    private List<Versus> CompleteWithRivals(HashSet<Team> allPossibleTeams, List<Player> players, int numPlayersPerTeam)
-    {
-        throw new NotImplementedException();
-    }
+    private HashSet<Versus> CompleteWithRivals(HashSet<Team> allPossibleTeams, HashSet<Player> allPlayers, int numPlayersPerTeam) => [..allPossibleTeams
+        .Select(team1 =>
+        {
+            List<Player> remainingPlayers = [.. allPlayers.Except(team1.Players)];
+            return new Versus
+            {
+                Team1 = team1,
+                Team2 = new Team
+                {
+                    Players = remainingPlayers
+                }
+            };
+        })];
 }

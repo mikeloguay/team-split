@@ -4,13 +4,11 @@ public class Team : IEquatable<Team>
 {
     public Team(Team other)
     {
-        Name = other.Name;
         Players = [.. other.Players];
     }
 
     public Team() { }
 
-    public string? Name { get; init; }
     public List<Player> Players { get; init; } = [];
     public int Level => Players.Sum(p => p.Level);
 
@@ -20,7 +18,7 @@ public class Team : IEquatable<Team>
         return this;
     }
 
-    public override string ToString() => $"{Name}: [{string.Join(", ", Players.Select(p => p.Name))}]";
+    public override string ToString() => $"[{string.Join(", ", Players.Select(p => p.Name))}]";
 
     public bool Equals(Team? other)
     {
@@ -37,9 +35,8 @@ public class Team : IEquatable<Team>
     public override bool Equals(object? obj) => Equals((Team?)obj);
 
     public override int GetHashCode() => 
-        HashCode.Combine(Name,
-            HashCode.Combine(Players
-                                .Select(p => p.Name)
-                                .OrderBy(n => n)
-                                .Aggregate(0, (h, n) => HashCode.Combine(h, n))));
+        HashCode.Combine(Players
+                            .Select(p => p.Name)
+                            .OrderBy(n => n)
+                            .Aggregate(0, (h, n) => HashCode.Combine(h, n)));
 }
