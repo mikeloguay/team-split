@@ -23,7 +23,7 @@ public class TeamSplitterTest
             new Player { Name = "Antonio", Level = 10},
         ];
 
-        var exception = Assert.Throws<ArgumentException>(() => _teamSplitter.BestSplit(players));
+        var exception = Assert.Throws<ArgumentException>(() => _teamSplitter.BestSplitRandomFromTops(players));
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class TeamSplitterTest
             new Player { Name = "Dani", Level = 10},
         ];
 
-        Versus teamsCombination = _teamSplitter.BestSplit(players);
+        Versus teamsCombination = _teamSplitter.BestSplitRandomFromTops(players);
         Assert.Equal(2, teamsCombination.Team1.Players.Count);
         Assert.Equal(2, teamsCombination.Team2.Players.Count);
     }
@@ -53,7 +53,7 @@ public class TeamSplitterTest
             new Player { Name = "Roberto", Level = 10},
         ];
 
-        Versus teamsCombination = _teamSplitter.BestSplit(players);
+        Versus teamsCombination = _teamSplitter.BestSplitRandomFromTops(players);
         Assert.Equal(2, teamsCombination.Team1.Players.Count);
         Assert.Equal(2, teamsCombination.Team2.Players.Count);
 
@@ -119,7 +119,7 @@ public class TeamSplitterTest
             new Player { Name = "Roberto", Level = 10},
         ];
 
-        HashSet<Versus> versusList = _teamSplitter.TopSplits(players, 6);
+        HashSet<Versus> versusList = _teamSplitter.TopSplits(players);
         Assert.Equal([..versusList.OrderBy(v => v.LevelDiff)], versusList);
     }
 }

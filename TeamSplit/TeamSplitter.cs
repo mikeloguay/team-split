@@ -6,17 +6,37 @@ namespace TeamSplit;
 
 public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
 {
-    public Versus BestSplit(HashSet<Player> players) => TopSplits(players, 1).First();
-
-    public HashSet<Versus> TopSplits(HashSet<Player> players, int numSplits)
+    public Versus BestSplitRandomFromTops(HashSet<Player> players)
     {
-        logger.LogInformation("Generating splits for {PlayerCount} players...", players.Count);
+        HashSet<Versus> topSplits = TopSplits(players);
+        var best = topSplits.ElementAt(Random.Shared.Next(0, topSplits.Count));
+        logger.LogInformation("Mejor split aleatorio de los top");
+        logger.LogInformation("{BestSplit}", best);
+        return best;
+    }
+
+    public HashSet<Versus> TopSplits(HashSet<Player> players)
+    {
+        logger.LogInformation("Generando splits para {PlayerCount} players...", players.Count);
         ValidatePlayers(players);
         HashSet<Versus> allPossibleVersus = GenerateAllVersus(players, players.Count / 2);
+        logger.LogInformation("{SplitCount} splits generados", allPossibleVersus.Count);
 
-        return [.. allPossibleVersus
-            .OrderBy(v => v.LevelDiff)
-            .Take(numSplits)];
+        HashSet<Versus> allSplitsOrdered = [.. allPossibleVersus
+            .OrderBy(v => v.LevelDiff)];
+
+        int minLevelDiff = allSplitsOrdered.First().LevelDiff;
+        logger.LogInformation("Mínima diferencia: {MinLevelDiff}", minLevelDiff);
+
+        HashSet<Versus> topSplits = [.. allSplitsOrdered
+            .Where(v => v.LevelDiff == minLevelDiff)];
+
+        logger.LogInformation("{TopSplitCount} splits con mínima diferencia", topSplits.Count);
+
+        string splitsMessage = string.Join($"{Environment.NewLine}{Environment.NewLine}", topSplits.Select(v => v.ToString()));
+        logger.LogInformation("Splits: {Splits}", splitsMessage);
+
+        return topSplits;
     }
 
     private void ValidatePlayers(HashSet<Player> players)
