@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamSplit.Test", "TeamSplit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamSplit", "TeamSplit\TeamSplit.csproj", "{B45712CA-AC43-4DD1-9A9E-DBD3A09556B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamSplit.Api", "TeamSplit.Api\TeamSplit.Api.csproj", "{94C1A1D3-6EE1-48CB-A191-C902F8094444}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{B45712CA-AC43-4DD1-9A9E-DBD3A09556B1}.Release|x64.Build.0 = Release|Any CPU
 		{B45712CA-AC43-4DD1-9A9E-DBD3A09556B1}.Release|x86.ActiveCfg = Release|Any CPU
 		{B45712CA-AC43-4DD1-9A9E-DBD3A09556B1}.Release|x86.Build.0 = Release|Any CPU
+		{94C1A1D3-6EE1-48CB-A191-C902F8094444}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94C1A1D3-6EE1-48CB-A191-C902F8094444}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94C1A1D3-6EE1-48CB-A191-C902F8094444}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{94C1A1D3-6EE1-48CB-A191-C902F8094444}.Debug|x64.Build.0 = Debug|Any CPU
+		{94C1A1D3-6EE1-48CB-A191-C902F8094444}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{94C1A1D3-6EE1-48CB-A191-C902F8094444}.Debug|x86.Build.0 = Debug|Any CPU
+		{94C1A1D3-6EE1-48CB-A191-C902F8094444}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94C1A1D3-6EE1-48CB-A191-C902F8094444}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94C1A1D3-6EE1-48CB-A191-C902F8094444}.Release|x64.ActiveCfg = Release|Any CPU
+		{94C1A1D3-6EE1-48CB-A191-C902F8094444}.Release|x64.Build.0 = Release|Any CPU
+		{94C1A1D3-6EE1-48CB-A191-C902F8094444}.Release|x86.ActiveCfg = Release|Any CPU
+		{94C1A1D3-6EE1-48CB-A191-C902F8094444}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

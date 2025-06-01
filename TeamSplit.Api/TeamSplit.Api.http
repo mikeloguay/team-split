@@ -1,0 +1,6 @@
+@TeamSplit.Api_HostAddress = http://localhost:5288
+
+GET {{TeamSplit.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
