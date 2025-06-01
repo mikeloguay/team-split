@@ -1,4 +1,6 @@
-﻿using TeamSplit;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using TeamSplit;
 
 List<Player> players =
 [
@@ -14,7 +16,12 @@ List<Player> players =
     new Player { Name = "DaniJ", Level = 60},
 ];
 
-ITeamSplitter teamSplitter = new TeamSplitter();
+var services = new ServiceCollection();
+services.AddLogging(config => config.AddConsole());
+services.AddTransient<ITeamSplitter, TeamSplitter>();
+var provider = services.BuildServiceProvider();
+ITeamSplitter teamSplitter = provider.GetRequiredService<ITeamSplitter>();
+
 int numSplits = 3;
 HashSet<Versus> versuses = teamSplitter.TopSplits([.. players], numSplits);
 Console.WriteLine($"{numSplits} Posibles opciones:");

@@ -1,13 +1,16 @@
 
 
+using Microsoft.Extensions.Logging;
+
 namespace TeamSplit;
 
-public class TeamSplitter : ITeamSplitter
+public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
 {
     public Versus BestSplit(HashSet<Player> players) => TopSplits(players, 1).First();
 
     public HashSet<Versus> TopSplits(HashSet<Player> players, int numSplits)
     {
+        logger.LogInformation("Generating splits for {PlayerCount} players...", players.Count);
         ValidatePlayers(players);
         HashSet<Versus> allPossibleVersus = GenerateAllVersus(players, players.Count / 2);
 

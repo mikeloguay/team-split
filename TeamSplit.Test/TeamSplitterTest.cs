@@ -1,12 +1,16 @@
-﻿namespace TeamSplit.Test;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
+
+namespace TeamSplit.Test;
 
 public class TeamSplitterTest
 {
     private readonly ITeamSplitter _teamSplitter;
+    private readonly Mock<ILogger<TeamSplitter>> _loggerMock = new();
 
     public TeamSplitterTest()
     {
-        _teamSplitter = new TeamSplitter();
+        _teamSplitter = new TeamSplitter(_loggerMock.Object);
     }
 
     [Fact]
