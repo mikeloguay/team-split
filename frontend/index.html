@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Team Split</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="column">
+    <h3>Jugadores disponibles</h3>
+    <select id="leftList" multiple></select>
+    <button onclick="moveSelected('left', 'right')">→</button>
+  </div>
+
+  <div class="column">
+    <h3>Jugadores para calcular equipos</h3>
+    <select id="rightList" multiple></select>
+    <button onclick="moveSelected('right', 'left')">←</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
