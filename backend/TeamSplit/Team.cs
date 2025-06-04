@@ -25,10 +25,7 @@ public class Team : IEquatable<Team>
         if (ReferenceEquals(this, other)) return true;
         if (Players.Count != other.Players.Count) return false;
 
-        var thisPlayers = Players.Select(p => p.Name).OrderBy(n => n);
-        var otherPlayers = other.Players.Select(p => p.Name).OrderBy(n => n);
-
-        return thisPlayers.SequenceEqual(otherPlayers);
+        return Players.SetEquals(other.Players);
     }
 
     public override bool Equals(object? obj) => Equals((Team?)obj);

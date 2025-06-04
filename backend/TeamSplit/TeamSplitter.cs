@@ -1,5 +1,6 @@
 
 
+using System.IO.Pipelines;
 using Microsoft.Extensions.Logging;
 
 namespace TeamSplit;
@@ -34,7 +35,8 @@ public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
         logger.LogInformation("{TopSplitCount} splits con mínima diferencia", topSplits.Count);
 
         string splitsMessage = string.Join($"{Environment.NewLine}{Environment.NewLine}", topSplits.Select(v => v.ToString()));
-        logger.LogInformation("Splits: {Splits}", splitsMessage);
+        logger.LogInformation("Splits:");
+        logger.LogInformation("{Splits}", splitsMessage);
 
         return topSplits;
     }
@@ -44,7 +46,7 @@ public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
         if (players.Count % 2 != 0) throw new ArgumentException("Number of players must be even");
     }
 
-    private HashSet<Versus> GenerateAllVersus(HashSet<Player> players, int numPlayersPerTeam)
+    public HashSet<Versus> GenerateAllVersus(HashSet<Player> players, int numPlayersPerTeam)
     {
         HashSet<Team> allPossibleTeams = GenerateAllPossibleTeams(players, numPlayersPerTeam);
         return CompleteWithRivals(allPossibleTeams, players, numPlayersPerTeam);
@@ -66,7 +68,9 @@ public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
         return result;
     }
 
-    private HashSet<Versus> CompleteWithRivals(HashSet<Team> allPossibleTeams, HashSet<Player> allPlayers, int numPlayersPerTeam) => [..allPossibleTeams
+    public HashSet<Versus> CompleteWithRivals(HashSet<Team> allPossibleTeams, HashSet<Player> allPlayers, int numPlayersPerTeam)
+    {
+        HashSet<Versus> result = [..allPossibleTeams
         .Select(team1 =>
         {
             HashSet<Player> remainingPlayers = [.. allPlayers];
@@ -78,4 +82,9 @@ public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
                 Team2 = new Team(remainingPlayers)
             };
         })];
+
+        HashSet<Versus> resultDistint = [.. result.Distinct()];
+
+        return resultDistint; 
+    }
 }

@@ -9,3 +9,6 @@ var provider = services.BuildServiceProvider();
 ITeamSplitter teamSplitter = provider.GetRequiredService<ITeamSplitter>();
 
 Versus versus = teamSplitter.BestSplitRandomFromTops([.. PlayersDatabase.Players]);
+
+Console.WriteLine("Pulsa una tecla para salir...");
+Console.ReadLine();
