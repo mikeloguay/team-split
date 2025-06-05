@@ -135,7 +135,28 @@ public class TeamSplitterTest
         ];
 
         HashSet<Versus> versusList = _teamSplitter.GenerateAllVersus(players, 2);
-        Assert.Equal(3, versusList.Count);
+        Assert.Equal(6, versusList.Count);
+    }
+
+    [Fact]
+    public void TenPlayers_GenerateAllVersus_5NoRepeated()
+    {
+        HashSet<Player> players =
+        [
+            new Player { Name = "Roberto", Level = 1 },
+            new Player { Name = "Ale", Level = 80 },
+            new Player { Name = "Miki", Level = 78 },
+            new Player { Name = "Antonio", Level = 25 },
+            new Player { Name = "Canijo", Level = 100 },
+            new Player { Name = "Dani", Level = 75 },
+            new Player { Name = "Jose", Level = 78 },
+            new Player { Name = "DaniJ", Level = 65 },
+            new Player { Name = "Juani", Level = 50 },
+            new Player { Name = "Pablo", Level = 42 }
+    ];
+
+        HashSet<Versus> versusList = _teamSplitter.GenerateAllVersus(players, 5);
+        Assert.Equal(252, versusList.Count);
     }
 
     [Fact]
@@ -282,6 +303,14 @@ public class TeamSplitterTest
                 [
                     new Player { Name = "Antonio", Level = 50 },
                     new Player { Name = "Roberto", Level = 10 }
+                ]
+            },
+            new Team
+            {
+                Players =
+                [
+                    new Player { Name = "Roberto", Level = 10 },
+                    new Player { Name = "Antonio", Level = 50 },
                 ]
             }
         ];
