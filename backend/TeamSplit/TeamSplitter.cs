@@ -7,6 +7,12 @@ namespace TeamSplit;
 
 public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
 {
+    public Versus BestSplitRandomFromTops(HashSet<string> playerNames)
+    {
+        HashSet<Player> players = [.. PlayersDatabase.Players.Where(p => playerNames.Contains(p.Name))];
+        return BestSplitRandomFromTops([.. players]);
+    }
+
     public Versus BestSplitRandomFromTops(HashSet<Player> players)
     {
         HashSet<Versus> topSplits = TopSplits(players);

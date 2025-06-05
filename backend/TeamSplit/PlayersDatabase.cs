@@ -14,7 +14,7 @@ public static class PlayersDatabase
         new Player { Name = "Tito", Level = 40 },
         new Player { Name = "Jose", Level = 78 },
         new Player { Name = "DaniJ", Level = 65 },
-    //     new Player { Name = "Juani", Level = 50 },
-    //     new Player { Name = "Pablo", Level = 42 },
+        new Player { Name = "Juani", Level = 50 },
+        new Player { Name = "Pablo", Level = 42 },
      ];
 }
