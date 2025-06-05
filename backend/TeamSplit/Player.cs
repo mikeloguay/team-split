@@ -11,8 +11,7 @@ public class Player : IEquatable<Player>
         Level == other.Level;
 
     public override bool Equals(object? obj) => Equals((Player?)obj);
-    public override int GetHashCode() =>
-        HashCode.Combine(Name, Level);
+    public override int GetHashCode() => HashCode.Combine(Name, Level);
         
     public override string ToString() => $"{Name}";
     public string ToStringWithLevel() => $"{Name} ({Level})";

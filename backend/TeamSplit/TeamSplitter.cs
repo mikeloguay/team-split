@@ -70,21 +70,17 @@ public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
 
     public HashSet<Versus> CompleteWithRivals(HashSet<Team> allPossibleTeams, HashSet<Player> allPlayers, int numPlayersPerTeam)
     {
-        HashSet<Versus> result = [..allPossibleTeams
-        .Select(team1 =>
-        {
-            HashSet<Player> remainingPlayers = [.. allPlayers];
-            remainingPlayers.ExceptWith(team1.Players);
-
-            return new Versus
+        return [..allPossibleTeams
+            .Select(team1 =>
             {
-                Team1 = team1,
-                Team2 = new Team(remainingPlayers)
-            };
-        })];
+                HashSet<Player> remainingPlayers = [.. allPlayers];
+                remainingPlayers.ExceptWith(team1.Players);
 
-        HashSet<Versus> resultDistint = [.. result.Distinct()];
-
-        return resultDistint; 
+                return new Versus
+                {
+                    Team1 = team1,
+                    Team2 = new Team(remainingPlayers)
+                };
+            })];
     }
 }

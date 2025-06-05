@@ -30,9 +30,5 @@ public class Team : IEquatable<Team>
 
     public override bool Equals(object? obj) => Equals((Team?)obj);
 
-    public override int GetHashCode() => 
-        HashCode.Combine(Players
-                            .Select(p => p.Name)
-                            .OrderBy(n => n)
-                            .Aggregate(0, (h, n) => HashCode.Combine(h, n)));
+    public override int GetHashCode() => Players.Aggregate(0, (hash, player) => hash ^ player.GetHashCode());
 }
