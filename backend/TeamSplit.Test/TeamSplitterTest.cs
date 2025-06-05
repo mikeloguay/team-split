@@ -135,7 +135,7 @@ public class TeamSplitterTest
         ];
 
         HashSet<Versus> versusList = _teamSplitter.GenerateAllVersus(players, 2);
-        Assert.Equal(6, versusList.Count);
+        Assert.Equal(3, versusList.Count);
     }
 
     [Fact]
@@ -156,7 +156,7 @@ public class TeamSplitterTest
     ];
 
         HashSet<Versus> versusList = _teamSplitter.GenerateAllVersus(players, 5);
-        Assert.Equal(252, versusList.Count);
+        Assert.Equal(126, versusList.Count);
     }
 
     [Fact]
@@ -259,7 +259,7 @@ public class TeamSplitterTest
         ];
 
         HashSet<Versus> versusList = _teamSplitter.CompleteWithRivals(allPossibleTeams, allPlayers, 2);
-        Assert.Equal(2, versusList.Count);
+        Assert.Single(versusList);
     }
 
     [Fact]
@@ -316,5 +316,82 @@ public class TeamSplitterTest
         ];
 
         Assert.Equal(2, teams.Count);
+    }
+
+    [Fact]
+    public void TwoVersusDifferentOrders_Equals_Same()
+    {
+        Versus versus1 = new()
+        {
+            Team1 = new()
+            {
+                Players = [
+                new Player { Name = "Ale", Level = 80 },
+                new Player { Name = "Roberto", Level = 1 },
+            ]
+            },
+            Team2 = new()
+            {
+                Players = [
+                new Player { Name = "Diego", Level = 50 },
+                new Player { Name = "Miki", Level = 75 },
+            ]
+            },
+        };
+
+        Versus versus2 = new()
+        {
+            Team1 = new()
+            {
+                Players = [
+                new Player { Name = "Miki", Level = 75 },
+                new Player { Name = "Diego", Level = 50 },
+            ]
+            },
+            Team2 = new()
+            {
+                Players = [
+                new Player { Name = "Roberto", Level = 1 },
+                new Player { Name = "Ale", Level = 80 },
+            ]
+            },
+        };
+
+        Assert.Equal(versus1.GetHashCode(), versus2.GetHashCode());
+    }
+
+    [Fact]
+    public void TwoPlayersSame_HashCode_Equals()
+    {
+        Player player1 = new() { Name = "Ale", Level = 80 };
+        Player player2 = new() { Name = "Ale", Level = 80 };
+
+        Assert.Equal(player1.GetHashCode(), player2.GetHashCode());
+        Assert.Equal(player1, player2);
+    }
+
+    [Fact]
+    public void TwoTeamsSame_HashCode_Equals()
+    {
+        Team team1 = new()
+        {
+            Players =
+            [
+                new Player { Name = "Ale", Level = 80 },
+                new Player { Name = "Roberto", Level = 1 },
+            ]
+        };
+
+        Team team2 = new()
+        {
+            Players =
+            [
+                new Player { Name = "Roberto", Level = 1 },
+                new Player { Name = "Ale", Level = 80 },
+            ]
+        };
+
+        Assert.Equal(team1.GetHashCode(), team2.GetHashCode());
+        Assert.Equal(team1, team2);
     }
 }

@@ -15,7 +15,14 @@ public class Versus : IEquatable<Versus>
     
     public override bool Equals(object? obj) => Equals((Versus?)obj);
 
-    public override int GetHashCode() => HashCode.Combine(Team1, Team2);
+    public override int GetHashCode()
+    {
+        int hash1 = Team1.GetHashCode();
+        int hash2 = Team2.GetHashCode();
+        return hash1 < hash2
+            ? HashCode.Combine(hash1, hash2)
+            : HashCode.Combine(hash2, hash1);
+    }
 
     public override string ToString() => $"Con petos: {Team1}{Environment.NewLine}"
         + $"Sin petos: {Team2}{Environment.NewLine}";
