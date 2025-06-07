@@ -22,6 +22,8 @@ var app = builder.Build();
 
 app.UseCors();
 
+app.UseHttpsRedirection();
+
 app.MapOpenApi();
 
 var api = app.MapGroup("/api");
