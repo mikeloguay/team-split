@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Team Split</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Split</title>
+    <link rel="stylesheet" href="site.css">
 </head>
 <body>
-
-  <div class="column">
-    <h3>Jugadores disponibles</h3>
-    <select id="leftList" multiple></select>
-    <button onclick="moveSelected('left', 'right')">→</button>
-  </div>
-
-  <div class="column">
-    <h3>Jugadores para calcular equipos</h3>
-    <select id="rightList" multiple></select>
-    <button onclick="moveSelected('right', 'left')">←</button>
-  </div>
-
-  <script src="script.js"></script>
+    <div class="container">
+        <div class="column">
+            <h2>Jugadores disponibles</h2>
+            <div id="players-list"></div>
+            <p><strong>Seleccionados:</strong> <span id="selected-count">0</span></p>
+        </div>
+        <div class="column">
+            <h2>Equipos</h2>
+            <div id="teams"></div>
+        </div>
+    </div>
+    <button id="split-button">Dividir equipos</button>
+    <script src="script.js"></script>
 </body>
 </html>
