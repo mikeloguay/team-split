@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
 using TeamSplit;
@@ -20,9 +21,12 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-app.UseCors();
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedProto
+});
 
-app.UseHttpsRedirection();
+app.UseCors();
 
 app.MapOpenApi();
 
