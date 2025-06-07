@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Scalar.AspNetCore;
 using TeamSplit;
 using TeamSplit.Api;
 
@@ -15,9 +16,13 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddOpenApi();
+
 var app = builder.Build();
 
 app.UseCors();
+app.MapOpenApi();
+app.MapScalarApiReference();
 
 app.MapGet("/players", () =>
 {
