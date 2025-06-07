@@ -5,6 +5,10 @@ using TeamSplit;
 using TeamSplit.Api;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddScoped<ITeamSplitter, TeamSplitter>();
 
 builder.Services.AddCors(options =>
@@ -20,6 +24,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {

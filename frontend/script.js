@@ -3,15 +3,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     const selectedCount = document.getElementById("selected-count");
     const teamsDiv = document.getElementById("teams");
     const splitButton = document.getElementById("split-button");
+    const errorMessage = document.getElementById("error-message");
 
     let players = [];
 
     // Cargar jugadores al inicio
     const fetchPlayers = async () => {
-        const response = await fetch("https://team-split.onrender.com/api/players");
-        const data = await response.json();
-        players = data.players;
+        try {
+            const response = await fetch("https://team-split.onrender.com/api/players");
+            if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+            
+            const data = await response.json();
+            players = data.players;
+            renderPlayers();
+        } catch (error) {
+            showError(error.message);
+        }
+    };
 
+    // Renderizar lista de jugadores
+    const renderPlayers = () => {
         playersList.innerHTML = "";
         players.forEach(player => {
             const checkbox = document.createElement("input");
@@ -41,20 +52,36 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Dividir equipos al hacer clic en el botón
     splitButton.addEventListener("click", async () => {
-        const selectedPlayers = Array.from(document.querySelectorAll("#players-list input:checked"))
-                                    .map(input => input.value);
+        try {
+            const selectedPlayers = Array.from(document.querySelectorAll("#players-list input:checked"))
+                                        .map(input => input.value);
 
-        const response = await fetch("https://team-split.onrender.com/api/players/split", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ players: selectedPlayers })
-        });
-        
-        const data = await response.json();
+            const response = await fetch("https://team-split.onrender.com/api/players/split", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ players: selectedPlayers })
+            });
 
+            if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+
+            const data = await response.json();
+            renderTeams(data);
+        } catch (error) {
+            showError(error.message);
+        }
+    });
+
+    // Renderizar equipos
+    const renderTeams = (data) => {
         teamsDiv.innerHTML = `<h3>${data.team1.name}</h3><p>${data.team1.players.join(", ")}</p>
                               <h3>${data.team2.name}</h3><p>${data.team2.players.join(", ")}</p>`;
-    });
+    };
+
+    // Mostrar mensaje de error
+    const showError = (message) => {
+        errorMessage.textContent = message;
+        errorMessage.style.display = "block";
+    };
 
     fetchPlayers();
 });

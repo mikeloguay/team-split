@@ -21,3 +21,13 @@ button {
     font-size: 16px;
     cursor: pointer;
 }
+
+#players-list {
+    text-align: left;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+    margin-top: 20px;
+}
