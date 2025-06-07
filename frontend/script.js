@@ -1,3 +1,8 @@
+const API_BASE_URL =
+    window.location.hostname === "localhost" || window.location.protocol === "file:"
+        ? "http://localhost:8080/api"
+        : "https://team-split.onrender.com/api";
+
 document.addEventListener("DOMContentLoaded", async () => {
     const playersList = document.getElementById("players-list");
     const selectedCount = document.getElementById("selected-count");
@@ -10,9 +15,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Cargar jugadores al inicio
     const fetchPlayers = async () => {
         try {
-            const response = await fetch("https://team-split.onrender.com/api/players");
-            if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
-            
+            const response = await fetch(`${API_BASE_URL}/players`);
+            if (!response.ok) {
+                const problem = await response.json();
+                throw new Error(problem.title || `Error ${response.status}: ${response.statusText}`);
+            }
             const data = await response.json();
             players = data.players;
             renderPlayers();
@@ -52,17 +59,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Dividir equipos al hacer clic en el botón
     splitButton.addEventListener("click", async () => {
+        hideError();
         try {
             const selectedPlayers = Array.from(document.querySelectorAll("#players-list input:checked"))
                                         .map(input => input.value);
 
-            const response = await fetch("https://team-split.onrender.com/api/players/split", {
+            const response = await fetch(`${API_BASE_URL}/players/split`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ players: selectedPlayers })
             });
 
-            if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+            if (!response.ok) {
+                const problem = await response.json();
+                throw new Error(problem.title || `Error ${response.status}: ${response.statusText}`);
+            }
 
             const data = await response.json();
             renderTeams(data);
@@ -77,10 +88,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                               <h3>${data.team2.name}</h3><p>${data.team2.players.join(", ")}</p>`;
     };
 
-    // Mostrar mensaje de error
     const showError = (message) => {
         errorMessage.textContent = message;
         errorMessage.style.display = "block";
+    };
+
+    const hideError = (message) => {
+        errorMessage.textContent = "";
+        errorMessage.style.display = "none";
     };
 
     fetchPlayers();

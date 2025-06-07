@@ -49,7 +49,7 @@ public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
 
     private void ValidatePlayers(HashSet<Player> players)
     {
-        if (players.Count % 2 != 0) throw new ArgumentException("Number of players must be even");
+        if (players.Count % 2 != 0) throw new ArgumentException("El número de jugadores debe ser par.");
     }
 
     public HashSet<Versus> GenerateAllVersus(HashSet<Player> players, int numPlayersPerTeam)
