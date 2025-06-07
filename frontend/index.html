@@ -7,18 +7,21 @@
     <link rel="stylesheet" href="site.css">
 </head>
 <body>
+    <header><h1>Team Split</h1></header>
     <div class="container">
         <div class="column">
             <h2>Jugadores disponibles</h2>
             <div id="players-list"></div>
             <p><strong>Seleccionados:</strong> <span id="selected-count">0</span></p>
         </div>
+        <div class="button-column">
+            <button id="split-button">Dividir equipos</button>
+        </div>
         <div class="column">
             <h2>Equipos</h2>
             <div id="teams"></div>
         </div>
     </div>
-    <button id="split-button">Dividir equipos</button>
     <p id="error-message" class="error" style="display: none;"></p>
     <script src="script.js"></script>
 </body>
