@@ -21,15 +21,18 @@ builder.Services.AddOpenApi();
 var app = builder.Build();
 
 app.UseCors();
-app.MapOpenApi();
-app.MapScalarApiReference();
 
-app.MapGet("/players", () =>
+app.MapOpenApi();
+
+var api = app.MapGroup("/api");
+api.MapScalarApiReference();
+
+api.MapGet("/players", () =>
 {
-    return PlayersDatabase.Players;
+    return new PlayersResponse([.. PlayersDatabase.Players.Select(p => p.Name)]);
 });
 
-app.MapPost("/players/split", (ITeamSplitter teamSplitter,
+api.MapPost("/players/split", (ITeamSplitter teamSplitter,
     [FromBody] SplitRequest request) =>
 {
     Versus versus = teamSplitter.BestSplitRandomFromTops(request.Players);
