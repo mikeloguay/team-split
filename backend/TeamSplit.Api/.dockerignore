@@ -1,0 +1,17 @@
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/*.user
+**/*.suo
+**/*.userosscache
+**/*.sln.docstates
+**/TestResults/
+**/node_modules/
+Dockerfile
+docker-compose.yml
+.env
+.git
+.gitignore
+README.md
+*.md

@@ -25,9 +25,13 @@ app.MapGet("/players", () =>
 });
 
 app.MapPost("/players/split", (ITeamSplitter teamSplitter,
-    [FromBody] PlayersRequest request) =>
+    [FromBody] SplitRequest request) =>
 {
-    return teamSplitter.BestSplitRandomFromTops(request.Players);
+    Versus versus = teamSplitter.BestSplitRandomFromTops(request.Players);
+    return new VersusResponse(
+        new TeamResponse("Con petos", [.. versus.Team1.Players.Select(p => p.Name)]),
+        new TeamResponse("Sin petos", [.. versus.Team2.Players.Select(p => p.Name)])
+    );
 });
 
 app.Run();
