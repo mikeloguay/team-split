@@ -132,10 +132,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         teamsDiv.innerHTML = `
-            <div class="teams-labels">
-                <span>${data.team1.name}</span>
-                <span>${data.team2.name}</span>
-            </div>
             <div class="football-field">
                 <div class="team-row">${team1Row}</div>
                 <div class="team-row">${team2Row}</div>
