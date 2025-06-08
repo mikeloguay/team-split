@@ -1,6 +1,3 @@
-
-
-using System.IO.Pipelines;
 using Microsoft.Extensions.Logging;
 
 namespace TeamSplit;
@@ -17,32 +14,30 @@ public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
     {
         HashSet<Versus> topSplits = TopSplits(players);
         var best = topSplits.ElementAt(Random.Shared.Next(0, topSplits.Count));
-        logger.LogInformation("Mejor split aleatorio de los top");
-        logger.LogInformation("{BestSplit}", best);
+        logger.LogInformation("Best random split from tops: {BestSplit}", best);
         return best;
     }
 
     public HashSet<Versus> TopSplits(HashSet<Player> players)
     {
-        logger.LogInformation("Generando splits para {PlayerCount} players...", players.Count);
+        logger.LogInformation("Generating splits for {PlayerCount} players...", players.Count);
         ValidatePlayers(players);
         HashSet<Versus> allPossibleVersus = GenerateAllVersus(players, players.Count / 2);
-        logger.LogInformation("{SplitCount} splits generados", allPossibleVersus.Count);
+        logger.LogInformation("{SplitCount} splits generated", allPossibleVersus.Count);
 
         HashSet<Versus> allSplitsOrdered = [.. allPossibleVersus
             .OrderBy(v => v.LevelDiff)];
 
         int minLevelDiff = allSplitsOrdered.First().LevelDiff;
-        logger.LogInformation("Mínima diferencia: {MinLevelDiff}", minLevelDiff);
+        logger.LogInformation("Min level diff: {MinLevelDiff}", minLevelDiff);
 
         HashSet<Versus> topSplits = [.. allSplitsOrdered
             .Where(v => v.LevelDiff == minLevelDiff)];
 
-        logger.LogInformation("{TopSplitCount} splits con mínima diferencia", topSplits.Count);
+        logger.LogInformation("{TopSplitCount} splits with min level diff", topSplits.Count);
 
         string splitsMessage = string.Join($"{Environment.NewLine}{Environment.NewLine}", topSplits.Select(v => v.ToString()));
-        logger.LogInformation("Splits:");
-        logger.LogInformation("{Splits}", splitsMessage);
+        logger.LogInformation("Splits {Splits}", splitsMessage);
 
         return topSplits;
     }

@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             try {
                 const response = await fetch(url, options);
                 if (!response.ok) {
-                    // Si la respuesta es un error, solo reintenta si no es 4xx
                     if (response.status >= 400 && response.status < 500) {
                         return response;
                     }

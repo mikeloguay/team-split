@@ -21,5 +21,5 @@ Versus versus = teamSplitter.BestSplitRandomFromTops([
       "DaniJ"
   ] );
 
-Console.WriteLine("Pulsa una tecla para salir...");
+Console.WriteLine("Press any key to exit...");
 Console.ReadLine();

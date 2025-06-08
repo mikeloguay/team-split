@@ -19,8 +19,4 @@ public class Versus : IEquatable<Versus>
 
     public override string ToString() => $"Con petos: {Team1}{Environment.NewLine}"
         + $"Sin petos: {Team2}{Environment.NewLine}";
-
-    public string ToStringWithLevelDiff() => $"Con petos: {Team1}{Environment.NewLine}"
-        + $"Sin petos: {Team2}{Environment.NewLine}"
-        + $"Diferencia de nivel: {LevelDiff}";
 }
