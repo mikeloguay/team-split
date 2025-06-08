@@ -82,14 +82,27 @@ button:hover {
     gap: 8px;
 }
 
-#players-list label {
-    font-size: 1.08em;
-    color: #1e6b22;
+#players-list input[type="checkbox"] {
+    width: 1.5em;
+    height: 1.5em;
+    accent-color: #2196f3; /* azul para coherencia con el equipo 1 */
+    border-radius: 6px;
+    margin-right: 8px;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    box-shadow: 0 0 0 2px #b6fcb6;
 }
 
-#players-list input[type="checkbox"],
+#players-list input[type="checkbox"]:focus {
+    outline: 2px solid #1e6b22;
+    box-shadow: 0 0 0 3px #7be87b;
+}
+
 #players-list label {
+    font-size: 1.15em;
+    color: #1e6b22;
     cursor: pointer;
+    user-select: none;
 }
 
 .error {
@@ -175,24 +188,55 @@ button:hover {
 .shirt {
     width: 32px;
     height: 32px;
-    border-radius: 6px 6px 12px 12px;
+    position: relative;
     margin-bottom: 4px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
-    font-size: 1.2em;
-    font-weight: bold;
 }
 
-.shirt.team1 {
+.shirt::before, .shirt::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 12px;
+    height: 14px;
+    border-radius: 4px 4px 0 0;
+    background: inherit;
+    z-index: 1;
+}
+
+.shirt::before {
+    left: -10px; /* manga izquierda */
+    transform: rotate(-18deg);
+}
+
+.shirt::after {
+    right: -10px; /* manga derecha */
+    transform: rotate(18deg);
+}
+
+.shirt-body {
+    width: 20px;
+    height: 28px;
+    border-radius: 6px 6px 12px 12px;
+    background: inherit;
+    border: 2px solid #222;
+    position: absolute;
+    left: 50%;
+    top: 4px;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+/* Camiseta azul */
+.shirt.team1, .shirt.team1 .shirt-body {
     background: #2196f3;
-    color: #fff;
 }
 
-.shirt.team2 {
-    background: #ffeb3b;
-    color: #222;
-    border-color: #bfa900;
+/* Peto amarillo */
+.shirt.team2, .shirt.team2 .shirt-body {
+    background: #d5d822;
 }
 
 .player-name {
