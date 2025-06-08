@@ -43,7 +43,7 @@ app.MapScalarApiReference();
 
 app.MapGet("/players", () =>
 {
-    return new PlayersResponse([.. PlayersDatabase.Players.Select(p => p.Name)]);
+    return new PlayersResponse([.. PlayersDatabase.Players.Select(p => p.Name).OrderBy(p => p)]);
 });
 
 app.MapPost("/players/split", (ITeamSplitter teamSplitter,
@@ -51,8 +51,8 @@ app.MapPost("/players/split", (ITeamSplitter teamSplitter,
 {
     Versus versus = teamSplitter.BestSplitRandomFromTops(request.Players);
     return new VersusResponse(
-        new TeamResponse("Con petos", [.. versus.Team1.Players.Select(p => p.Name)]),
-        new TeamResponse("Sin petos", [.. versus.Team2.Players.Select(p => p.Name)])
+        new TeamResponse([.. versus.Team1.Players.Select(p => p.Name).OrderBy(p => p)]),
+        new TeamResponse([.. versus.Team2.Players.Select(p => p.Name).OrderBy(p => p)])
     );
 });
 
