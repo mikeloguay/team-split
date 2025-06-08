@@ -111,10 +111,37 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    const renderTeams = (data) => {
-        teamsDiv.innerHTML = `<h3>${data.team1.name}</h3><p>${data.team1.players.join(", ")}</p>
-                              <h3>${data.team2.name}</h3><p>${data.team2.players.join(", ")}</p>`;
-    };
+    function renderTeams(data) {
+        // data.team1.name, data.team1.players, data.team2.name, data.team2.players
+        const team1 = data.team1.players;
+        const team2 = data.team2.players;
+
+        // Calcula el máximo de jugadores para alinear filas
+        const maxPlayers = Math.max(team1.length, team2.length);
+
+        // Genera HTML para cada equipo
+        let team1Row = '';
+        let team2Row = '';
+        for (let i = 0; i < maxPlayers; i++) {
+            team1Row += team1[i]
+                ? `<div class="player-shirt"><div class="shirt team1"> </div><div class="player-name">${team1[i]}</div></div>`
+                : `<div class="player-shirt"></div>`;
+            team2Row += team2[i]
+                ? `<div class="player-shirt"><div class="shirt team2"> </div><div class="player-name">${team2[i]}</div></div>`
+                : `<div class="player-shirt"></div>`;
+        }
+
+        teamsDiv.innerHTML = `
+            <div class="teams-labels">
+                <span>${data.team1.name}</span>
+                <span>${data.team2.name}</span>
+            </div>
+            <div class="football-field">
+                <div class="team-row">${team1Row}</div>
+                <div class="team-row">${team2Row}</div>
+            </div>
+        `;
+    }
 
     const showError = (message) => {
         errorMessage.textContent = message;

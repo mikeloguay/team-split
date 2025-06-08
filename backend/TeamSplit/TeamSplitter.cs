@@ -22,6 +22,10 @@ public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
     {
         logger.LogInformation("Generating splits for {PlayerCount} players...", players.Count);
         ValidatePlayers(players);
+
+        // Shuffle players to ensure randomness
+        players = [.. players.OrderBy(_ => Random.Shared.Next())];
+
         HashSet<Versus> allPossibleVersus = GenerateAllVersus(players, players.Count / 2);
         logger.LogInformation("{SplitCount} splits generated", allPossibleVersus.Count);
 

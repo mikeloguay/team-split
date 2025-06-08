@@ -15,9 +15,13 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy
+            .WithOrigins(
+                "https://team-split.onrender.com",
+                "http://localhost:7070"
+            )
+            .WithMethods("GET", "POST")
+            .AllowAnyHeader();
     });
 });
 
