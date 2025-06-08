@@ -1,7 +1,7 @@
 # Team Split
 
-- Web deployed at [Team Split](https://team-split-site.onrender.com/)
-- API deployed at [API](https://team-split.onrender.com/api/scalar/)
+- Web deployed at [Team Split](https://teamsplitsite.onrender.com/)
+- API deployed at [API](https://teamsplit-api.onrender.com/scalar/)
 - CLI just for testing purposes
 
 Web application that take a list of players, and split them into 2 teams, based on levels of each player.
