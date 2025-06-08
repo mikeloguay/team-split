@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let players = [];
 
-    async function fetchWithRetry(url, options = {}, retries = 3, delay = 10000) {
+    async function fetchWithRetry(url, options = {}, retries = 3, delay = 5000) {
         showSpinner();
         for (let attempt = 1; attempt <= retries; attempt++) {
             try {
