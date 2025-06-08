@@ -17,7 +17,7 @@ builder.Services.AddCors(options =>
     {
         policy
             .WithOrigins(
-                "https://team-split.onrender.com",
+                "https://team-split-site.onrender.com/",
                 "http://localhost:7070"
             )
             .WithMethods("GET", "POST")
