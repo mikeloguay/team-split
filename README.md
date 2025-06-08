@@ -17,7 +17,7 @@ Very simple and minimalistic, it is based on:
 
 ## Limitations and future development
 
-- UI general imprivements: teams organized in a football field, with pictures, etc.
+- UI general improvements: teams organized in a football field, with pictures, etc.
 - Be able to add new players dinamically
 - User login and storage, so every user could have its own list of players
 - ...
