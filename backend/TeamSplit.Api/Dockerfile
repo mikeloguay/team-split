@@ -6,9 +6,9 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["backend/TeamSplit.Api/TeamSplit.Api.csproj", "TeamSplit.Api/"]
+COPY ["TeamSplit.Api/TeamSplit.Api.csproj", "TeamSplit.Api/"]
 RUN dotnet restore "./TeamSplit.Api/TeamSplit.Api.csproj"
-COPY backend .
+COPY . .
 WORKDIR "/src/TeamSplit.Api"
 RUN dotnet build "./TeamSplit.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
