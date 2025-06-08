@@ -31,6 +31,20 @@ var app = builder.Build();
 
 app.UseExceptionHandler();
 
+// Middleware para loguear cabeceras relevantes en cada request
+app.Use(async (context, next) =>
+{
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    logger.LogInformation("Headers: Host={Host}, X-Forwarded-Proto={XForwardedProto}, X-Forwarded-For={XForwardedFor}, Origin={Origin}, Referer={Referer}",
+        context.Request.Headers["Host"].ToString(),
+        context.Request.Headers["X-Forwarded-Proto"].ToString(),
+        context.Request.Headers["X-Forwarded-For"].ToString(),
+        context.Request.Headers["Origin"].ToString(),
+        context.Request.Headers["Referer"].ToString()
+    );
+    await next();
+});
+
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedProto
