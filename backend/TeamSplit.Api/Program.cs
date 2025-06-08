@@ -17,7 +17,7 @@ builder.Services.AddCors(options =>
     {
         policy
             .WithOrigins(
-                "https://team-split-site.onrender.com",
+                "https://teamsplit.onrender.com",
                 "http://localhost:7070"
             )
             .WithMethods("GET", "POST")
@@ -38,18 +38,15 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 });
 
 app.UseCors();
-
 app.MapOpenApi();
+app.MapScalarApiReference();
 
-var api = app.MapGroup("/api");
-api.MapScalarApiReference();
-
-api.MapGet("/players", () =>
+app.MapGet("/players", () =>
 {
     return new PlayersResponse([.. PlayersDatabase.Players.Select(p => p.Name)]);
 });
 
-api.MapPost("/players/split", (ITeamSplitter teamSplitter,
+app.MapPost("/players/split", (ITeamSplitter teamSplitter,
     [FromBody] SplitRequest request) =>
 {
     Versus versus = teamSplitter.BestSplitRandomFromTops(request.Players);

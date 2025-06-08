@@ -1,7 +1,7 @@
 const API_BASE_URL =
     window.location.hostname === "localhost" || window.location.protocol === "file:"
-        ? "http://localhost:8080/api"
-        : "https://team-split.onrender.com/api";
+        ? "http://localhost:8080"
+        : "https://team-split-api.onrender.com";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const playersList = document.getElementById("players-list");
