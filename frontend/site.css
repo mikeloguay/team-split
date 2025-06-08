@@ -43,7 +43,6 @@ header h1::before {
     min-width: 220px;
     max-width: 400px;
     padding: 18px 20px;
-    border: 1.5px solid #2e7d32;
     border-radius: 12px;
     background: rgba(255,255,255,0.92);
     box-shadow: 0 2px 12px 0 rgba(30,107,34,0.08);
@@ -104,18 +103,6 @@ button:hover {
     display: inline-block;
 }
 
-#teams {
-    margin-top: 30px;
-    background: linear-gradient(135deg, #b6fcb6 0%, #7be87b 100%);
-    border-radius: 18px;
-    padding: 32px 12px 32px 12px;
-    border: 2px solid #388e3c;
-    box-shadow: 0 1px 6px 0 rgba(30,107,34,0.05);
-    min-height: 260px;
-    position: relative;
-    overflow: hidden;
-}
-
 #teams h3 {
     color: #388e3c;
     margin-bottom: 6px;
@@ -160,8 +147,7 @@ button:hover {
     max-width: 480px;
     margin: 0 auto;
     aspect-ratio: 2 / 1;
-    background: linear-gradient(90deg, #a8e063 0%, #56ab2f 100%);
-    border: 3px solid #388e3c;
+    background: linear-gradient(135deg, #b6fcb6 0%, #7be87b 100%);
     border-radius: 18px;
     position: relative;
     display: flex;
@@ -191,7 +177,6 @@ button:hover {
     height: 32px;
     border-radius: 6px 6px 12px 12px;
     margin-bottom: 4px;
-    border: 2px solid #222;
     display: flex;
     align-items: center;
     justify-content: center;
