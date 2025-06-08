@@ -13,9 +13,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let players = [];
 
+    async function fetchWithRetry(url, options = {}, retries = 3, delay = 10000) {
+        for (let attempt = 1; attempt <= retries; attempt++) {
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    // Si la respuesta es un error, solo reintenta si no es 4xx
+                    if (response.status >= 400 && response.status < 500) {
+                        return response;
+                    }
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                return response;
+            } catch (err) {
+                if (attempt === retries) throw err;
+                await new Promise(res => setTimeout(res, delay));
+            }
+        }
+    }
+
     const fetchPlayers = async () => {
         try {
-            const response = await fetch(`${API_BASE_URL}/players`);
+            const response = await fetchWithRetry(`${API_BASE_URL}/players`);
             if (!response.ok) {
                 const problem = await response.json();
                 throw new Error(problem.title || `Error ${response.status}: ${response.statusText}`);
@@ -68,7 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const selectedPlayers = Array.from(document.querySelectorAll("#players-list input:checked"))
                                         .map(input => input.value);
 
-            const response = await fetch(`${API_BASE_URL}/players/split`, {
+            const response = await fetchWithRetry(`${API_BASE_URL}/players/split`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ players: selectedPlayers })
