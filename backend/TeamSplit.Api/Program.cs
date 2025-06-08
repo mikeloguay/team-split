@@ -31,11 +31,11 @@ var app = builder.Build();
 
 app.UseExceptionHandler();
 
-app.UseForwardedHeaders(new ForwardedHeadersOptions
-{
-    ForwardedHeaders = ForwardedHeaders.XForwardedProto
-    | ForwardedHeaders.XForwardedHost
-});
+// app.UseForwardedHeaders(new ForwardedHeadersOptions
+// {
+//     ForwardedHeaders = ForwardedHeaders.XForwardedProto
+//     | ForwardedHeaders.XForwardedHost
+// });
 
 app.UseCors();
 
