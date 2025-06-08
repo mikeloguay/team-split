@@ -1,6 +1,6 @@
 # Team Split
 
-- Web deployed at [Team Split](https://teamsplitsite.onrender.com/)
+- Web deployed at [Team Split](https://teamsplit.onrender.com/)
 - API deployed at [API](https://teamsplit-api.onrender.com/scalar/)
 - CLI just for testing purposes
 
