@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let players = [];
 
     async function fetchWithRetry(url, options = {}, retries = 3, delay = 10000) {
+        showSpinner();
         for (let attempt = 1; attempt <= retries; attempt++) {
             try {
                 const response = await fetch(url, options);
@@ -25,8 +26,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
                 return response;
             } catch (err) {
-                if (attempt === retries) throw err;
+                if (attempt === retries) 
+                {
+                    throw err;
+                }
+                    
                 await new Promise(res => setTimeout(res, delay));
+            } finally {
+                hideSpinner();
             }
         }
     }
@@ -118,6 +125,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         errorMessage.textContent = "";
         errorMessage.style.display = "none";
     };
+
+    function showSpinner() {
+        document.getElementById("spinner").style.display = "block";
+    }
+    function hideSpinner() {
+        document.getElementById("spinner").style.display = "none";
+    }
 
     fetchPlayers();
 });
