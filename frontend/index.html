@@ -8,11 +8,14 @@
 </head>
 <body>
     <header><h1>Team Split</h1></header>
+    <p id="error-message" class="error" style="display: none;"></p>
     <div class="container">
         <div class="column">
-            <h2>Jugadores disponibles</h2>
+            <h2>Jugadores seleccionados 
+                (<span id="selected-count">0</span>)
+            </h2>
             <div id="players-list"></div>
-            <p><strong>Seleccionados:</strong> <span id="selected-count">0</span></p>
+            <p>Total: <span id="players-count"></span></p>
         </div>
         <div class="button-column">
             <button id="split-button">Dividir equipos</button>
@@ -22,7 +25,6 @@
             <div id="teams"></div>
         </div>
     </div>
-    <p id="error-message" class="error" style="display: none;"></p>
     <script src="script.js"></script>
 </body>
 </html>

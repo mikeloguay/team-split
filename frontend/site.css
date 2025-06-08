@@ -88,6 +88,11 @@ button:hover {
     color: #1e6b22;
 }
 
+#players-list input[type="checkbox"],
+#players-list label {
+    cursor: pointer;
+}
+
 .error {
     color: #c62828;
     background: #fff3f3;

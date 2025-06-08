@@ -5,6 +5,7 @@ const API_BASE_URL =
 
 document.addEventListener("DOMContentLoaded", async () => {
     const playersList = document.getElementById("players-list");
+    const playersCount = document.getElementById("players-count");
     const selectedCount = document.getElementById("selected-count");
     const teamsDiv = document.getElementById("teams");
     const splitButton = document.getElementById("split-button");
@@ -12,7 +13,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let players = [];
 
-    // Cargar jugadores al inicio
     const fetchPlayers = async () => {
         try {
             const response = await fetch(`${API_BASE_URL}/players`);
@@ -28,18 +28,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     };
 
-    // Renderizar lista de jugadores
     const renderPlayers = () => {
         playersList.innerHTML = "";
         players.forEach(player => {
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.value = player;
-            checkbox.checked = true;
+            checkbox.id = `player-${player}`;
             checkbox.addEventListener("change", updateSelectedCount);
 
             const label = document.createElement("label");
             label.textContent = player;
+            label.setAttribute("for", `player-${player}`);
 
             const div = document.createElement("div");
             div.appendChild(checkbox);
@@ -48,18 +48,22 @@ document.addEventListener("DOMContentLoaded", async () => {
             playersList.appendChild(div);
         });
 
+        updatePlayersCount();
         updateSelectedCount();
     };
 
-    // Actualizar contador de seleccionados
+    const updatePlayersCount = () => {
+        playersCount.textContent = players.length;
+    };
+
     const updateSelectedCount = () => {
         const selectedPlayers = document.querySelectorAll("#players-list input:checked");
         selectedCount.textContent = selectedPlayers.length;
     };
 
-    // Dividir equipos al hacer clic en el botón
     splitButton.addEventListener("click", async () => {
         hideError();
+        teamsDiv.innerHTML = "";
         try {
             const selectedPlayers = Array.from(document.querySelectorAll("#players-list input:checked"))
                                         .map(input => input.value);
@@ -82,7 +86,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // Renderizar equipos
     const renderTeams = (data) => {
         teamsDiv.innerHTML = `<h3>${data.team1.name}</h3><p>${data.team1.players.join(", ")}</p>
                               <h3>${data.team2.name}</h3><p>${data.team2.players.join(", ")}</p>`;
