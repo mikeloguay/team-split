@@ -90,7 +90,7 @@ public class TeamSplitterTest
         Assert.Contains(canijoTeam.Players, p => p.Name == "Roberto");
     }
 
-    [Fact(Skip = "Slow")]
+    [Fact]
     public void TwelvePlayers_Split_OK()
     {
         HashSet<Player> players =
@@ -119,7 +119,7 @@ public class TeamSplitterTest
         Assert.Contains(canijoTeam.Players, p => p.Name == "Roberto");
     }
 
-    [Fact(Skip = "Slow")]
+    [Fact]
     public void FourteenPlayers_Split_OK()
     {
         HashSet<Player> players =
@@ -195,7 +195,7 @@ public class TeamSplitterTest
         Assert.Equal(10, teams.Count);
     }
 
-    [Fact(Skip = "Slow")]
+    [Fact]
     public void TwelvePlayersBy6_GenerateAllPossibleTeams_924()
     {
         HashSet<Player> players =
@@ -218,7 +218,7 @@ public class TeamSplitterTest
         Assert.Equal(924, teams.Count);
     }
 
-    [Fact(Skip = "Slow")]
+    [Fact]
     public void FourteenPlayersBy7_GenerateAllPossibleTeams_924()
     {
         HashSet<Player> players =

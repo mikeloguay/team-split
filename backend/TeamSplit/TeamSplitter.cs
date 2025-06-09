@@ -40,9 +40,6 @@ public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
 
         logger.LogInformation("{TopSplitCount} splits with min level diff", topSplits.Count);
 
-        string splitsMessage = string.Join($"{Environment.NewLine}{Environment.NewLine}", topSplits.Select(v => v.ToString()));
-        logger.LogInformation("Splits {Splits}", splitsMessage);
-
         return topSplits;
     }
 
@@ -65,15 +62,30 @@ public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
 
     public HashSet<Team> GenerateAllPossibleTeams(HashSet<Player> players, int numPlayersPerTeam)
     {
-        if (numPlayersPerTeam == 1) return [.. players.Select(p => new Team { Players = [p] })];
+        // Caso base: si el número de jugadores a elegir es igual al total, solo hay un equipo posible
+        if (players.Count == numPlayersPerTeam)
+            return [new Team(players)];
 
-        HashSet<Team> result = [];
+        // Caso base: si solo hay que elegir uno, cada jugador es un equipo
+        if (numPlayersPerTeam == 1)
+            return [.. players.Select(p => new Team([p]))];
 
-        foreach (Player player in players)
+        var result = new HashSet<Team>();
+
+        // Convierte a lista para acceso por índice y evitar enumeraciones repetidas
+        var playersList = players.ToList();
+
+        for (int i = 0; i <= playersList.Count - numPlayersPerTeam; i++)
         {
-            HashSet<Player> playersReduced = [.. players.Where(p => p != player)];
-            HashSet<Team> allPossibleTeams = GenerateAllPossibleTeams(playersReduced, numPlayersPerTeam - 1);
-            result.UnionWith(allPossibleTeams.Select(t => new Team(t.AddPlayer(player))));
+            var current = playersList[i];
+            // Crea un subconjunto con los jugadores restantes
+            var remaining = new HashSet<Player>(playersList.Skip(i + 1));
+            // Llama recursivamente para los siguientes jugadores
+            foreach (var subTeam in GenerateAllPossibleTeams(remaining, numPlayersPerTeam - 1))
+            {
+                var teamPlayers = new HashSet<Player>(subTeam.Players) { current };
+                result.Add(new Team(teamPlayers));
+            }
         }
 
         return result;
