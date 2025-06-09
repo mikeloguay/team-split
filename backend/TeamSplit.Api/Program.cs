@@ -6,6 +6,15 @@ using TeamSplit.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Logging.AddSimpleConsole(options =>
+{
+    options.TimestampFormat = "yyyy-MM-ddTHH:mm:ss.fffZ - ";
+    options.SingleLine = true;
+    options.IncludeScopes = false;
+    options.UseUtcTimestamp = true;
+});
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 

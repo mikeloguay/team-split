@@ -26,7 +26,7 @@ public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
         // Shuffle players to ensure randomness
         players = [.. players.OrderBy(_ => Random.Shared.Next())];
 
-        HashSet<Versus> allPossibleVersus = GenerateAllVersus(players, players.Count / 2);
+        HashSet<Versus> allPossibleVersus = GenerateAllVersus(players);
         logger.LogInformation("{SplitCount} splits generated", allPossibleVersus.Count);
 
         HashSet<Versus> allSplitsOrdered = [.. allPossibleVersus
@@ -51,10 +51,16 @@ public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
         if (players.Count <= 0 || players.Count % 2 != 0) throw new ArgumentException("El número de jugadores debe ser par y mayor que cero.");
     }
 
-    public HashSet<Versus> GenerateAllVersus(HashSet<Player> players, int numPlayersPerTeam)
+    public HashSet<Versus> GenerateAllVersus(HashSet<Player> players)
     {
-        HashSet<Team> allPossibleTeams = GenerateAllPossibleTeams(players, numPlayersPerTeam);
-        return CompleteWithRivals(allPossibleTeams, players, numPlayersPerTeam);
+        logger.LogInformation("Generating all possible teams for {PlayerCount} players...", players.Count);
+        HashSet<Team> allPossibleTeams = GenerateAllPossibleTeams(players, players.Count / 2);
+        logger.LogInformation("{TeamCount} teams generated.", allPossibleTeams.Count);
+
+        logger.LogInformation("Completing teams with rivals...");
+        var withRivals = CompleteWithRivals(allPossibleTeams, players);
+        logger.LogInformation("{VersusCount} versus generated.", withRivals.Count);
+        return withRivals;
     }
 
     public HashSet<Team> GenerateAllPossibleTeams(HashSet<Player> players, int numPlayersPerTeam)
@@ -73,7 +79,7 @@ public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
         return result;
     }
 
-    public HashSet<Versus> CompleteWithRivals(HashSet<Team> allPossibleTeams, HashSet<Player> allPlayers, int numPlayersPerTeam)
+    public HashSet<Versus> CompleteWithRivals(HashSet<Team> allPossibleTeams, HashSet<Player> allPlayers)
     {
         return [..allPossibleTeams
             .Select(team1 =>

@@ -59,6 +59,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.value = player;
+            checkbox.checked = true; 
             checkbox.id = `player-${player}`;
             checkbox.addEventListener("change", updateSelectedCount);
 
