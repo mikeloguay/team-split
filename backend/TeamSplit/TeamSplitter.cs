@@ -60,6 +60,7 @@ public class TeamSplitter(ILogger<TeamSplitter> logger) : ITeamSplitter
         return withRivals;
     }
 
+    // TODO: intentar cambiar por https://chatgpt.com/share/68474f8a-1130-800a-a6a7-1f85af74dcae
     public HashSet<Team> GenerateAllPossibleTeams(HashSet<Player> players, int numPlayersPerTeam)
     {
         // Caso base: si el número de jugadores a elegir es igual al total, solo hay un equipo posible

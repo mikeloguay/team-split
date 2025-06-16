@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             checkbox.type = "checkbox";
             checkbox.value = player;
             checkbox.id = `player-${player}`;
+            checkbox.checked = true;
             checkbox.addEventListener("change", updateSelectedCount);
 
             const label = document.createElement("label");
