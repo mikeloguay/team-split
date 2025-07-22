@@ -26,8 +26,12 @@ header h1 {
 }
 
 header h1::before {
-    content: "⚽️";
-    font-size: 1.1em;
+    content: "";
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background: url('img/logo.png') no-repeat center center;
+    background-size: contain;
 }
 
 .container {
