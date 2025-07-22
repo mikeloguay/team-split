@@ -27,7 +27,8 @@ builder.Services.AddCors(options =>
         policy
             .WithOrigins(
                 "https://teamsplit.onrender.com",
-                "http://localhost:7070"
+                "http://localhost:7070",
+                "http://localhost:5500"
             )
             .WithMethods("GET", "POST")
             .AllowAnyHeader();

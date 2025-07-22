@@ -4,12 +4,14 @@ const API_BASE_URL =
         : "https://teamsplit-api.onrender.com";
 
 document.addEventListener("DOMContentLoaded", async () => {
+    const selectAllCheckbox = document.getElementById("select-all-checkbox");
     const playersList = document.getElementById("players-list");
     const playersCount = document.getElementById("players-count");
     const selectedCount = document.getElementById("selected-count");
     const teamsDiv = document.getElementById("teams");
     const splitButton = document.getElementById("split-button");
     const errorMessage = document.getElementById("error-message");
+
 
     let players = [];
 
@@ -61,7 +63,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             checkbox.value = player;
             checkbox.id = `player-${player}`;
             checkbox.checked = true;
-            checkbox.addEventListener("change", updateSelectedCount);
+            checkbox.addEventListener("change", () => {
+                updateSelectedCount();
+                // Actualiza el estado del selectAllCheckbox
+                const allChecked = Array.from(document.querySelectorAll('#players-list input[type="checkbox"]')).every(cb => cb.checked);
+                selectAllCheckbox.checked = allChecked;
+            });
 
             const label = document.createElement("label");
             label.textContent = player;
@@ -76,7 +83,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         updatePlayersCount();
         updateSelectedCount();
+        // Al renderizar, marca el selectAllCheckbox si todos están marcados
+        const allChecked = Array.from(document.querySelectorAll('#players-list input[type="checkbox"]')).every(cb => cb.checked);
+        selectAllCheckbox.checked = allChecked;
     };
+
+    // Evento para marcar/desmarcar todos
+    selectAllCheckbox.addEventListener("change", () => {
+        const checked = selectAllCheckbox.checked;
+        document.querySelectorAll('#players-list input[type="checkbox"]').forEach(cb => {
+            cb.checked = checked;
+        });
+        updateSelectedCount();
+    });
+
+    // Funcionalidad de marcar/desmarcar todos
 
     const updatePlayersCount = () => {
         playersCount.textContent = players.length;
