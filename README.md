@@ -20,7 +20,6 @@ Very simple and minimalistic, it is based on:
 - UI general improvements: teams organized in a football field, with pictures, etc.
 - Be able to add new players dinamically
 - User login and storage, so every user could have its own list of players
-- ...
 
 ## Build and run backend
 
