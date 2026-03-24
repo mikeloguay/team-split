@@ -16,7 +16,7 @@ public static class PlayersDatabase
         new Player { Name = "DaniJ", Level = 66 },
         new Player { Name = "Juani", Level = 75 },
         new Player { Name = "Pablo", Level = 40 },
-        new Player { Name = "Canca", Level = 35 },
+        new Player { Name = "Canca", Level = 26 },
         new Player { Name = "Alberto", Level = 74 },
         new Player { Name = "Iván", Level = 38 },
         new Player { Name = "Manolo", Level = 72 },
