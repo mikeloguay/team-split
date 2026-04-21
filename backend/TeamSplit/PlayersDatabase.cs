@@ -10,7 +10,7 @@ public static class PlayersDatabase
         new Player { Name = "Miki", Level = 75 },
         new Player { Name = "Antonio", Level = 25 },
         new Player { Name = "Canijo", Level = 100 },
-        new Player { Name = "Dani", Level = 45 },
+        new Player { Name = "Dani", Level = 49 },
         new Player { Name = "Tito", Level = 39 },
         new Player { Name = "Jose", Level = 72 },
         new Player { Name = "DaniJ", Level = 66 },
@@ -23,7 +23,7 @@ public static class PlayersDatabase
         new Player { Name = "Isra", Level = 78 },
         new Player { Name = "Xelan", Level = 70 },
         new Player { Name = "AntonioV", Level = 55 },
-        new Player { Name = "JoseM", Level = 39 },
+        new Player { Name = "JoseM", Level = 38 },
         new Player { Name = "Sergio", Level = 63 },
         new Player { Name = "Rafa", Level = 66 },
      ];
