@@ -407,3 +407,6 @@ FodyWeavers.xsd
 out/
 
 *.db
+frontend/dist/
+*.db-shm
+*.db-wal
