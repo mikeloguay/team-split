@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 throw new Error(problem.title || `Error ${response.status}: ${response.statusText}`);
             }
             const data = await response.json();
-            players = data.players;
+            players = data;
             renderPlayers();
         } catch (error) {
             showError(error.message);
@@ -60,8 +60,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         players.forEach(player => {
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
-            checkbox.value = player;
-            checkbox.id = `player-${player}`;
+            checkbox.value = player.name;
+            checkbox.id = `player-${player.name}`;
             checkbox.checked = true;
             checkbox.addEventListener("change", () => {
                 updateSelectedCount();
@@ -71,8 +71,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             const label = document.createElement("label");
-            label.textContent = player;
-            label.setAttribute("for", `player-${player}`);
+            label.textContent = player.name;
+            label.setAttribute("for", `player-${player.name}`);
 
             const div = document.createElement("div");
             div.appendChild(checkbox);
