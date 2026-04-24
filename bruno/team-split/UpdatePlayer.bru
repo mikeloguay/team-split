@@ -1,0 +1,17 @@
+meta {
+  name: Update Player
+  type: http
+  seq: 7
+}
+
+put {
+  url: {{baseUrl}}/players/Miki
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "level": 80
+  }
+}

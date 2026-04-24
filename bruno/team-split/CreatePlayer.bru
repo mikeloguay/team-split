@@ -1,0 +1,18 @@
+meta {
+  name: Create Player
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/players
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Pepito",
+    "level": 53
+  }
+}
