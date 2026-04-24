@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Plus, Pencil, Trash2, Check, X } from 'lucide-react'
 import { createPlayer, updatePlayer, deletePlayer } from '../api'
 
 export default function Players({ players, onRefresh }) {
@@ -70,7 +71,9 @@ export default function Players({ players, onRefresh }) {
           onChange={(e) => setLevel(e.target.value)}
           required
         />
-        <button type="submit">Añadir</button>
+        <button type="submit" className="icon-btn" aria-label="Añadir">
+          <Plus size={18} />
+        </button>
       </form>
 
       <table>
@@ -97,8 +100,12 @@ export default function Players({ players, onRefresh }) {
                       required
                       autoFocus
                     />
-                    <button type="submit">Guardar</button>
-                    <button type="button" onClick={() => setEditing(null)}>Cancelar</button>
+                    <button type="submit" className="icon-btn" aria-label="Guardar">
+                      <Check size={16} />
+                    </button>
+                    <button type="button" className="icon-btn" aria-label="Cancelar" onClick={() => setEditing(null)}>
+                      <X size={16} />
+                    </button>
                   </form>
                 </td>
                 <td />
@@ -108,8 +115,12 @@ export default function Players({ players, onRefresh }) {
                 <td>{p.name}</td>
                 <td>{p.level}</td>
                 <td className="row-actions">
-                  <button onClick={() => startEdit(p)}>Editar</button>
-                  <button className="danger" onClick={() => handleDelete(p.name)}>Eliminar</button>
+                  <button className="icon-btn" aria-label="Editar" onClick={() => startEdit(p)}>
+                    <Pencil size={16} />
+                  </button>
+                  <button className="icon-btn danger" aria-label="Eliminar" onClick={() => handleDelete(p.name)}>
+                    <Trash2 size={16} />
+                  </button>
                 </td>
               </tr>
             ),

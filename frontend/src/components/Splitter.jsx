@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Shuffle } from 'lucide-react'
 import { splitTeams } from '../api'
 
 export default function Splitter({ players }) {
@@ -67,6 +68,7 @@ export default function Splitter({ players }) {
         onClick={handleSplit}
         disabled={selected.size < 2 || loading}
       >
+        <Shuffle size={18} />
         {loading ? 'Dividiendo…' : `Dividir ${selected.size} jugadores`}
       </button>
 

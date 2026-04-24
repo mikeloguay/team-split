@@ -116,6 +116,19 @@ button.danger:hover:not(:disabled) {
   border-color: #f87171;
 }
 
+/* Icon-only buttons */
+button.icon-btn {
+  padding: 0.4rem;
+  min-width: 2.2rem;
+  min-height: 2.2rem;
+  justify-content: center;
+}
+
+/* Split button icon + text gap */
+.split-btn {
+  gap: 0.5rem;
+}
+
 button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
@@ -264,3 +277,35 @@ tbody td { padding: 0.6rem 0.5rem; }
 
 .team li { padding: 0.35rem 0.75rem; }
 .team li:last-child { border-bottom: none; }
+
+/* Mobile */
+@media (max-width: 540px) {
+  .app {
+    padding: 0.875rem 0.75rem;
+  }
+
+  header {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  section {
+    padding: 1rem;
+  }
+
+  .add-form {
+    flex-wrap: wrap;
+  }
+
+  .add-form input:first-child {
+    flex: 1 1 100%;
+  }
+
+  .player-grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  }
+
+  .teams {
+    grid-template-columns: 1fr;
+  }
+}
