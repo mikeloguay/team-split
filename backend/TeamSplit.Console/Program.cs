@@ -8,18 +8,7 @@ services.AddTransient<ITeamSplitter, TeamSplitter>();
 var provider = services.BuildServiceProvider();
 ITeamSplitter teamSplitter = provider.GetRequiredService<ITeamSplitter>();
 
-Versus versus = teamSplitter.BestSplitRandomFromTops([
-      "Roberto",
-      "Diego",
-      "Ale",
-      "Miki",
-      "Antonio",
-      "Canijo",
-      "Dani",
-      "Tito",
-      "Jose",
-      "DaniJ"
-  ] );
+Versus versus = teamSplitter.BestSplitRandomFromTops(PlayersDatabase.Players);
 
 Console.WriteLine("Press any key to exit...");
 Console.ReadLine();

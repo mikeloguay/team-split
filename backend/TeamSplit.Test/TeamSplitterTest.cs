@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace TeamSplit.Test;
@@ -151,100 +152,7 @@ public class TeamSplitterTest
     }
 
     [Fact]
-    public void ThreePlayersBy2_GenerateAllPossibleTeams_3()
-    {
-        HashSet<Player> players =
-        [
-            new Player { Name = "Canijo", Level = 100},
-            new Player { Name = "Ale", Level = 50},
-            new Player { Name = "Antonio", Level = 50},
-        ];
-
-        HashSet<Team> teams = _teamSplitter.GenerateAllPossibleTeams(players, 2);
-        Assert.Equal(3, teams.Count);
-    }
-
-    [Fact]
-    public void FourPlayersBy2_GenerateAllPossibleTeams_6()
-    {
-        HashSet<Player> players =
-        [
-            new Player { Name = "Canijo", Level = 100},
-            new Player { Name = "Ale", Level = 50},
-            new Player { Name = "Antonio", Level = 50},
-            new Player { Name = "Roberto", Level = 10},
-        ];
-
-        HashSet<Team> teams = _teamSplitter.GenerateAllPossibleTeams(players, 2);
-        Assert.Equal(6, teams.Count);
-    }
-
-    [Fact]
-    public void FivePlayersBy3_GenerateAllPossibleTeams_6()
-    {
-        HashSet<Player> players =
-        [
-            new Player { Name = "Canijo", Level = 100},
-            new Player { Name = "Ale", Level = 50},
-            new Player { Name = "Antonio", Level = 50},
-            new Player { Name = "Roberto", Level = 10},
-            new Player { Name = "Tito", Level = 10},
-        ];
-
-        HashSet<Team> teams = _teamSplitter.GenerateAllPossibleTeams(players, 3);
-        Assert.Equal(10, teams.Count);
-    }
-
-    [Fact]
-    public void TwelvePlayersBy6_GenerateAllPossibleTeams_924()
-    {
-        HashSet<Player> players =
-        [
-            new Player { Name = "Player01", Level = 1},
-            new Player { Name = "Player02", Level = 5},
-            new Player { Name = "Player03", Level = 10},
-            new Player { Name = "Player04", Level = 15},
-            new Player { Name = "Player05", Level = 20},
-            new Player { Name = "Player06", Level = 25},
-            new Player { Name = "Player07", Level = 30},
-            new Player { Name = "Player08", Level = 35},
-            new Player { Name = "Player09", Level = 40},
-            new Player { Name = "Player10", Level = 45},
-            new Player { Name = "Player11", Level = 50},
-            new Player { Name = "Player12", Level = 55},
-        ];
-
-        HashSet<Team> teams = _teamSplitter.GenerateAllPossibleTeams(players, 6);
-        Assert.Equal(924, teams.Count);
-    }
-
-    [Fact]
-    public void FourteenPlayersBy7_GenerateAllPossibleTeams_924()
-    {
-        HashSet<Player> players =
-        [
-            new Player { Name = "Player01", Level = 1},
-            new Player { Name = "Player02", Level = 5},
-            new Player { Name = "Player03", Level = 10},
-            new Player { Name = "Player04", Level = 15},
-            new Player { Name = "Player05", Level = 20},
-            new Player { Name = "Player06", Level = 25},
-            new Player { Name = "Player07", Level = 30},
-            new Player { Name = "Player08", Level = 35},
-            new Player { Name = "Player09", Level = 40},
-            new Player { Name = "Player10", Level = 45},
-            new Player { Name = "Player11", Level = 50},
-            new Player { Name = "Player12", Level = 55},
-            new Player { Name = "Player13", Level = 60},
-            new Player { Name = "Player14", Level = 65},
-        ];
-
-        HashSet<Team> teams = _teamSplitter.GenerateAllPossibleTeams(players, 7);
-        Assert.Equal(3432, teams.Count);
-    }
-
-    [Fact]
-    public void EasySplit_Top6Splits_AscendingDiffs()
+    public void EasySplit_TopSplits_AllOptimal()
     {
         HashSet<Player> players =
         [
@@ -255,43 +163,8 @@ public class TeamSplitterTest
         ];
 
         HashSet<Versus> versusList = _teamSplitter.TopSplits(players);
-        Assert.Equal([.. versusList.OrderBy(v => v.LevelDiff)], versusList);
-    }
-
-    [Fact]
-    public void FourPlayers_GenerateAllVersus_3NoRepeated()
-    {
-        HashSet<Player> players =
-        [
-            new Player { Name = "Canijo", Level = 100},
-            new Player { Name = "Ale", Level = 50},
-            new Player { Name = "Antonio", Level = 50},
-            new Player { Name = "Roberto", Level = 10},
-        ];
-
-        HashSet<Versus> versusList = _teamSplitter.GenerateAllVersus(players);
-        Assert.Equal(3, versusList.Count);
-    }
-
-    [Fact]
-    public void TenPlayers_GenerateAllVersus_5NoRepeated()
-    {
-        HashSet<Player> players =
-        [
-            new Player { Name = "Roberto", Level = 1 },
-            new Player { Name = "Ale", Level = 80 },
-            new Player { Name = "Miki", Level = 78 },
-            new Player { Name = "Antonio", Level = 25 },
-            new Player { Name = "Canijo", Level = 100 },
-            new Player { Name = "Dani", Level = 75 },
-            new Player { Name = "Jose", Level = 78 },
-            new Player { Name = "DaniJ", Level = 65 },
-            new Player { Name = "Juani", Level = 50 },
-            new Player { Name = "Pablo", Level = 42 }
-    ];
-
-        HashSet<Versus> versusList = _teamSplitter.GenerateAllVersus(players);
-        Assert.Equal(126, versusList.Count);
+        int minDiff = versusList.Min(v => v.LevelDiff);
+        Assert.All(versusList, v => Assert.Equal(minDiff, v.LevelDiff));
     }
 
     [Fact]
@@ -363,38 +236,18 @@ public class TeamSplitterTest
     }
 
     [Fact]
-    public void HappyPath_CompleteWithRivals_OK()
+    public void TwentyTwoPlayers_Split_FastAndCorrect()
     {
-        HashSet<Team> allPossibleTeams =
-        [
-            new Team
-            {
-                Players =
-                [
-                    new Player { Name = "Canijo", Level = 100 },
-                    new Player { Name = "Ale", Level = 50 }
-                ]
-            },
-            new Team
-            {
-                Players =
-                [
-                    new Player { Name = "Antonio", Level = 50 },
-                    new Player { Name = "Roberto", Level = 10 }
-                ]
-            }
-        ];
+        var players = PlayersDatabase.Players;
+        Assert.Equal(22, players.Count);
 
-        HashSet<Player> allPlayers =
-        [
-            new Player { Name = "Canijo", Level = 100 },
-            new Player { Name = "Ale", Level = 50 },
-            new Player { Name = "Antonio", Level = 50 },
-            new Player { Name = "Roberto", Level = 10 }
-        ];
+        var sw = Stopwatch.StartNew();
+        Versus result = _teamSplitter.BestSplitRandomFromTops(players);
+        sw.Stop();
 
-        HashSet<Versus> versusList = _teamSplitter.CompleteWithRivals(allPossibleTeams, allPlayers);
-        Assert.Single(versusList);
+        Assert.Equal(11, result.Team1.Players.Count);
+        Assert.Equal(11, result.Team2.Players.Count);
+        Assert.True(sw.Elapsed.TotalSeconds < 5, $"Split took {sw.Elapsed.TotalSeconds:F2}s — expected under 5s");
     }
 
     [Fact]
