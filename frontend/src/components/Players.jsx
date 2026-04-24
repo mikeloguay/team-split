@@ -50,34 +50,34 @@ export default function Players({ players, onRefresh }) {
 
   return (
     <section>
-      <h2>Players</h2>
+      <h2>Jugadores</h2>
 
       {error && <p className="error">{error}</p>}
 
       <form onSubmit={handleAdd} className="add-form">
         <input
-          placeholder="Name"
+          placeholder="Nombre"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
         />
         <input
           type="number"
-          placeholder="Level (1–100)"
+          placeholder="Nivel (1–100)"
           min={1}
           max={100}
           value={level}
           onChange={(e) => setLevel(e.target.value)}
           required
         />
-        <button type="submit">Add</button>
+        <button type="submit">Añadir</button>
       </form>
 
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Level</th>
+            <th>Nombre</th>
+            <th>Nivel</th>
             <th />
           </tr>
         </thead>
@@ -97,8 +97,8 @@ export default function Players({ players, onRefresh }) {
                       required
                       autoFocus
                     />
-                    <button type="submit">Save</button>
-                    <button type="button" onClick={() => setEditing(null)}>Cancel</button>
+                    <button type="submit">Guardar</button>
+                    <button type="button" onClick={() => setEditing(null)}>Cancelar</button>
                   </form>
                 </td>
                 <td />
@@ -108,8 +108,8 @@ export default function Players({ players, onRefresh }) {
                 <td>{p.name}</td>
                 <td>{p.level}</td>
                 <td className="row-actions">
-                  <button onClick={() => startEdit(p)}>Edit</button>
-                  <button onClick={() => handleDelete(p.name)}>Delete</button>
+                  <button onClick={() => startEdit(p)}>Editar</button>
+                  <button className="danger" onClick={() => handleDelete(p.name)}>Eliminar</button>
                 </td>
               </tr>
             ),

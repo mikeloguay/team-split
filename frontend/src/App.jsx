@@ -3,8 +3,25 @@ import Players from './components/Players'
 import Splitter from './components/Splitter'
 import { getPlayers } from './api'
 
+function usePath() {
+  const [path, setPath] = useState(window.location.pathname)
+
+  useEffect(() => {
+    const onPop = () => setPath(window.location.pathname)
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
+
+  function navigate(to) {
+    window.history.pushState({}, '', to)
+    setPath(to)
+  }
+
+  return [path, navigate]
+}
+
 export default function App() {
-  const [tab, setTab] = useState('split')
+  const [path, navigate] = usePath()
   const [players, setPlayers] = useState([])
   const [error, setError] = useState(null)
 
@@ -27,19 +44,16 @@ export default function App() {
       <header>
         <h1>Team Split</h1>
         <nav>
-          <button className={tab === 'split' ? 'active' : ''} onClick={() => setTab('split')}>
-            Split
-          </button>
-          <button className={tab === 'players' ? 'active' : ''} onClick={() => setTab('players')}>
-            Players
+          <button className={path === '/' ? 'active' : ''} onClick={() => navigate('/')}>
+            Dividir
           </button>
         </nav>
       </header>
 
       {error && <p className="error">{error}</p>}
 
-      {tab === 'split' && <Splitter players={players} />}
-      {tab === 'players' && <Players players={players} onRefresh={loadPlayers} />}
+      {path === '/players' && <Players players={players} onRefresh={loadPlayers} />}
+      {path !== '/players' && <Splitter players={players} />}
     </div>
   )
 }

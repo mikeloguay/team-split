@@ -36,7 +36,7 @@ export default function Splitter({ players }) {
 
   return (
     <section>
-      <h2>Select players</h2>
+      <h2>Seleccionar jugadores</h2>
 
       {error && <p className="error">{error}</p>}
 
@@ -46,7 +46,7 @@ export default function Splitter({ players }) {
           checked={allSelected}
           onChange={(e) => toggleAll(e.target.checked)}
         />
-        Select all ({players.length})
+        Seleccionar todos ({players.length})
       </label>
 
       <div className="player-grid">
@@ -67,21 +67,21 @@ export default function Splitter({ players }) {
         onClick={handleSplit}
         disabled={selected.size < 2 || loading}
       >
-        {loading ? 'Splitting…' : `Split ${selected.size} players`}
+        {loading ? 'Dividiendo…' : `Dividir ${selected.size} jugadores`}
       </button>
 
       {result && (
         <div className="teams">
-          <div className="team">
-            <h3>Team 1</h3>
+          <div className="team team1">
+            <div className="team-header">Equipo 1</div>
             <ul>
               {result.team1.players.map((name) => (
                 <li key={name}>{name}</li>
               ))}
             </ul>
           </div>
-          <div className="team">
-            <h3>Team 2</h3>
+          <div className="team team2">
+            <div className="team-header">Equipo 2</div>
             <ul>
               {result.team2.players.map((name) => (
                 <li key={name}>{name}</li>
