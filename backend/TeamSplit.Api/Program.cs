@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,8 +22,27 @@ builder.Services.AddProblemDetails();
 
 builder.Services.AddScoped<ITeamSplitter, TeamSplitter>();
 
-builder.Services.AddDbContext<AppDbContext>(opt =>
-    opt.UseSqlite("Data Source=teamsplit.db"));
+var databaseUrl = builder.Configuration["DATABASE_URL"]
+    ?? throw new InvalidOperationException("DATABASE_URL not configured");
+
+var connectionString = databaseUrl.StartsWith("postgresql://") || databaseUrl.StartsWith("postgres://")
+    ? ConvertDatabaseUrl(databaseUrl)
+    : databaseUrl;
+
+builder.Services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(connectionString));
+
+var googleClientId = builder.Configuration["GOOGLE_CLIENT_ID"]
+    ?? throw new InvalidOperationException("GOOGLE_CLIENT_ID not configured");
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://accounts.google.com";
+        options.Audience = googleClientId;
+        options.MapInboundClaims = false;
+    });
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
@@ -47,75 +67,81 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
-    if (!db.Players.Any())
-    {
-        db.Players.AddRange(PlayersDatabase.Players.Select(p => new PlayerEntity { Name = p.Name, Level = p.Level }));
-        db.SaveChanges();
-    }
 }
 
 app.UseExceptionHandler();
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
-    // This is to fix openapi documentation not working behind a reverse proxy
     ForwardedHeaders = ForwardedHeaders.XForwardedProto
 });
 
 app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapOpenApi();
 app.MapScalarApiReference();
 
-app.MapGet("/players", async (AppDbContext db) =>
+app.MapGet("/players", async (AppDbContext db, HttpContext ctx) =>
 {
-    var players = await db.Players.OrderBy(p => p.Name).ToListAsync();
+    var userId = ctx.User.FindFirst("sub")!.Value;
+    var players = await db.Players
+        .Where(p => p.UserId == userId)
+        .OrderBy(p => p.Name)
+        .ToListAsync();
     return players.Select(p => new PlayerResponse(p.Name, p.Level));
-});
+}).RequireAuthorization();
 
-app.MapGet("/players/{name}", async (string name, AppDbContext db) =>
+app.MapGet("/players/{name}", async (string name, AppDbContext db, HttpContext ctx) =>
 {
-    var player = await db.Players.FindAsync(name);
+    var userId = ctx.User.FindFirst("sub")!.Value;
+    var player = await db.Players.FindAsync(userId, name);
     return player is null
         ? Results.NotFound()
         : Results.Ok(new PlayerResponse(player.Name, player.Level));
-});
+}).RequireAuthorization();
 
-app.MapPost("/players", async (CreatePlayerRequest request, AppDbContext db) =>
+app.MapPost("/players", async (CreatePlayerRequest request, AppDbContext db, HttpContext ctx) =>
 {
-    if (await db.Players.AnyAsync(p => p.Name == request.Name))
+    var userId = ctx.User.FindFirst("sub")!.Value;
+    if (await db.Players.AnyAsync(p => p.UserId == userId && p.Name == request.Name))
         return Results.Conflict();
 
-    var entity = new PlayerEntity { Name = request.Name, Level = request.Level };
+    var entity = new PlayerEntity { UserId = userId, Name = request.Name, Level = request.Level };
     db.Players.Add(entity);
     await db.SaveChangesAsync();
     return Results.Created($"/players/{entity.Name}", new PlayerResponse(entity.Name, entity.Level));
-});
+}).RequireAuthorization();
 
-app.MapPut("/players/{name}", async (string name, UpdatePlayerRequest request, AppDbContext db) =>
+app.MapPut("/players/{name}", async (string name, UpdatePlayerRequest request, AppDbContext db, HttpContext ctx) =>
 {
-    var player = await db.Players.FindAsync(name);
+    var userId = ctx.User.FindFirst("sub")!.Value;
+    var player = await db.Players.FindAsync(userId, name);
     if (player is null) return Results.NotFound();
 
     player.Level = request.Level;
     await db.SaveChangesAsync();
     return Results.Ok(new PlayerResponse(player.Name, player.Level));
-});
+}).RequireAuthorization();
 
-app.MapDelete("/players/{name}", async (string name, AppDbContext db) =>
+app.MapDelete("/players/{name}", async (string name, AppDbContext db, HttpContext ctx) =>
 {
-    var player = await db.Players.FindAsync(name);
+    var userId = ctx.User.FindFirst("sub")!.Value;
+    var player = await db.Players.FindAsync(userId, name);
     if (player is null) return Results.NotFound();
 
     db.Players.Remove(player);
     await db.SaveChangesAsync();
     return Results.NoContent();
-});
+}).RequireAuthorization();
 
-app.MapPost("/players/split", async (ITeamSplitter teamSplitter, AppDbContext db,
+app.MapPost("/players/split", async (ITeamSplitter teamSplitter, AppDbContext db, HttpContext ctx,
     [FromBody] SplitRequest request) =>
 {
+    var userId = ctx.User.FindFirst("sub")!.Value;
     var playerEntities = await db.Players
-        .Where(p => request.Players.Contains(p.Name))
+        .Where(p => p.UserId == userId && request.Players.Contains(p.Name))
         .ToListAsync();
 
     var players = playerEntities
@@ -127,6 +153,23 @@ app.MapPost("/players/split", async (ITeamSplitter teamSplitter, AppDbContext db
         new TeamResponse([.. versus.Team1.Players.Select(p => p.Name).OrderBy(p => p)]),
         new TeamResponse([.. versus.Team2.Players.Select(p => p.Name).OrderBy(p => p)])
     );
-});
+}).RequireAuthorization();
 
 app.Run();
+
+static string ConvertDatabaseUrl(string url)
+{
+    var uri = new Uri(url);
+    var userInfo = uri.UserInfo.Split(':', 2);
+    var host = uri.Host;
+    var port = uri.IsDefaultPort ? 5432 : uri.Port;
+    var database = uri.AbsolutePath.TrimStart('/');
+    var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+    var sslMode = query["sslmode"] switch
+    {
+        "require" or "verify-ca" or "verify-full" => "Require",
+        "disable" => "Disable",
+        _ => "Prefer"
+    };
+    return $"Host={host};Port={port};Database={database};Username={userInfo[0]};Password={userInfo[1]};SSL Mode={sslMode};Trust Server Certificate=true";
+}

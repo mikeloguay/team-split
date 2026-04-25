@@ -278,6 +278,49 @@ tbody td { padding: 0.6rem 0.5rem; }
 .team li { padding: 0.35rem 0.75rem; }
 .team li:last-child { border-bottom: none; }
 
+/* Login screen */
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0fdf4;
+}
+
+.login-card {
+  background: white;
+  border: 1px solid #bbf7d0;
+  border-top: 3px solid #16a34a;
+  border-radius: 8px;
+  padding: 2.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  max-width: 360px;
+  width: 100%;
+}
+
+.login-card p {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* User info in header */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 2px solid #4ade80;
+}
+
 /* Mobile */
 @media (max-width: 540px) {
   .app {

@@ -6,7 +6,11 @@
       "Bash(dotnet package *)",
       "Bash(npm show *)",
       "Bash(npm install *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(dotnet add *)",
+      "Bash(dotnet remove *)",
+      "PowerShell(dotnet remove *)",
+      "PowerShell(dotnet build *)"
     ]
   }
 }

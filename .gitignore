@@ -410,3 +410,5 @@ out/
 frontend/dist/
 *.db-shm
 *.db-wal
+
+.env.*

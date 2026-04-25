@@ -8,6 +8,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<PlayerEntity>().HasKey(p => p.Name);
+        modelBuilder.Entity<PlayerEntity>().HasKey(p => new { p.UserId, p.Name });
     }
 }

@@ -3,11 +3,19 @@ const BASE_URL =
     ? 'http://localhost:8080'
     : 'https://teamsplit-api.onrender.com'
 
+let authToken = null
+
+export function setAuthToken(token) {
+  authToken = token
+}
+
 async function request(path, options = {}) {
-  const res = await fetch(`${BASE_URL}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options,
-  })
+  const headers = { 'Content-Type': 'application/json' }
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+
+  const res = await fetch(`${BASE_URL}${path}`, { headers, ...options })
+
+  if (res.status === 401) throw new Error('UNAUTHORIZED')
   if (!res.ok) {
     const body = await res.json().catch(() => ({}))
     throw new Error(body.title || `Error ${res.status}`)
