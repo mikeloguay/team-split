@@ -5,4 +5,5 @@ public class PlayerEntity
     public required string UserId { get; set; }
     public required string Name { get; set; }
     public required int Level { get; set; }
+    public string? Email { get; set; }
 }
