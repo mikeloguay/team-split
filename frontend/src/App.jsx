@@ -66,7 +66,7 @@ export default function App() {
   return (
     <div className="app">
       <header>
-        <h1>Team Split</h1>
+        <h1>Team split</h1>
         <nav>
           <button className={path === '/' ? 'active' : ''} onClick={() => navigate('/')}>
             Dividir

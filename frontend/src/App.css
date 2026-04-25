@@ -302,6 +302,10 @@ tbody td { padding: 0.6rem 0.5rem; }
   width: 100%;
 }
 
+.login-card h1 {
+  color: #16a34a;
+}
+
 .login-card p {
   font-size: 0.875rem;
   color: #6b7280;
