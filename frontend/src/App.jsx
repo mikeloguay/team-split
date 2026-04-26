@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { Menu } from 'lucide-react'
 import Players from './components/Players'
 import Splitter from './components/Splitter'
 import Login from './components/Login'
@@ -37,6 +38,7 @@ export default function App() {
   const [error, setError] = useState(null)
   const [user, setUser] = useState(null)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [navOpen, setNavOpen] = useState(false)
 
   const logout = useCallback(() => {
     setUser(null)
@@ -69,6 +71,18 @@ export default function App() {
     return () => document.removeEventListener('click', close)
   }, [menuOpen])
 
+  useEffect(() => {
+    if (!navOpen) return
+    const close = () => setNavOpen(false)
+    document.addEventListener('click', close)
+    return () => document.removeEventListener('click', close)
+  }, [navOpen])
+
+  function goTo(to) {
+    navigate(to)
+    setNavOpen(false)
+  }
+
   function handleLogin({ credential }) {
     const payload = parseJwt(credential)
     setUser({ name: payload.name, picture: payload.picture })
@@ -82,16 +96,28 @@ export default function App() {
   return (
     <div className="app">
       <header>
-        <h1>Team split</h1>
-        <nav>
-          <button className={path === '/' ? 'active' : ''} onClick={() => navigate('/')}>
-            Dividir
-          </button>
-          <button className={path === '/players' ? 'active' : ''} onClick={() => navigate('/players')}>
-            Jugadores
-          </button>
-        </nav>
-        <div className="user-menu">
+        <h1 className="site-title" onClick={() => navigate('/')}>Team split</h1>
+        <div className="header-right">
+          <div className="nav-menu">
+            <button
+              className="nav-menu-trigger"
+              onClick={(e) => { e.stopPropagation(); setNavOpen((v) => !v) }}
+              aria-label="Navegación"
+            >
+              <Menu size={24} />
+            </button>
+            {navOpen && (
+              <div className="nav-menu-dropdown">
+                <button className={path === '/' ? 'active' : ''} onClick={() => goTo('/')}>
+                  Dividir
+                </button>
+                <button className={path === '/players' ? 'active' : ''} onClick={() => goTo('/players')}>
+                  Jugadores
+                </button>
+              </div>
+            )}
+          </div>
+          <div className="user-menu">
           <button
             className="user-menu-trigger"
             onClick={(e) => { e.stopPropagation(); setMenuOpen((v) => !v) }}
@@ -106,6 +132,7 @@ export default function App() {
               <button onClick={logout}>Salir</button>
             </div>
           )}
+        </div>
         </div>
       </header>
 
