@@ -1,14 +1,19 @@
 import { useState } from 'react'
 import { Shuffle, Users } from 'lucide-react'
-import { splitTeams } from '../api'
+import { splitTeams, type Player, type SplitResult } from '../api'
 
-export default function Splitter({ players, onGoToPlayers }) {
-  const [selected, setSelected] = useState(new Set())
-  const [result, setResult] = useState(null)
-  const [error, setError] = useState(null)
+interface SplitterProps {
+  players: Player[]
+  onGoToPlayers: () => void
+}
+
+export default function Splitter({ players, onGoToPlayers }: SplitterProps) {
+  const [selected, setSelected] = useState<Set<string>>(new Set())
+  const [result, setResult] = useState<SplitResult | null>(null)
+  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  function toggle(name) {
+  function toggle(name: string) {
     setSelected((prev) => {
       const next = new Set(prev)
       next.has(name) ? next.delete(name) : next.add(name)
@@ -16,7 +21,7 @@ export default function Splitter({ players, onGoToPlayers }) {
     })
   }
 
-  function toggleAll(checked) {
+  function toggleAll(checked: boolean) {
     setSelected(checked ? new Set(players.map((p) => p.name)) : new Set())
   }
 
@@ -29,7 +34,7 @@ export default function Splitter({ players, onGoToPlayers }) {
       const data = await splitTeams([...selected])
       setResult(data)
     } catch (e) {
-      setError(e.message)
+      setError(e instanceof Error ? e.message : 'Error desconocido')
     } finally {
       setLoading(false)
     }

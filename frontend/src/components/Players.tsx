@@ -1,15 +1,21 @@
 import { useState } from 'react'
 import { Plus, Pencil, Trash2, Check, X, Shuffle } from 'lucide-react'
-import { createPlayer, updatePlayer, deletePlayer } from '../api'
+import { createPlayer, updatePlayer, deletePlayer, type Player } from '../api'
 
-export default function Players({ players, onRefresh, onGoHome }) {
+interface PlayersProps {
+  players: Player[]
+  onRefresh: () => Promise<void>
+  onGoHome: () => void
+}
+
+export default function Players({ players, onRefresh, onGoHome }: PlayersProps) {
   const [name, setName] = useState('')
   const [level, setLevel] = useState('')
-  const [editing, setEditing] = useState(null)
+  const [editing, setEditing] = useState<Player | null>(null)
   const [editLevel, setEditLevel] = useState('')
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
 
-  async function handleAdd(e) {
+  async function handleAdd(e: React.FormEvent) {
     e.preventDefault()
     try {
       await createPlayer(name.trim(), Number(level))
@@ -18,34 +24,35 @@ export default function Players({ players, onRefresh, onGoHome }) {
       setError(null)
       await onRefresh()
     } catch (e) {
-      setError(e.message)
+      setError(e instanceof Error ? e.message : 'Error desconocido')
     }
   }
 
-  function startEdit(player) {
+  function startEdit(player: Player) {
     setEditing(player)
     setEditLevel(String(player.level))
   }
 
-  async function handleUpdate(e) {
+  async function handleUpdate(e: React.FormEvent) {
     e.preventDefault()
+    if (!editing) return
     try {
       await updatePlayer(editing.name, Number(editLevel))
       setEditing(null)
       setError(null)
       await onRefresh()
     } catch (e) {
-      setError(e.message)
+      setError(e instanceof Error ? e.message : 'Error desconocido')
     }
   }
 
-  async function handleDelete(playerName) {
+  async function handleDelete(playerName: string) {
     try {
       await deletePlayer(playerName)
       setError(null)
       await onRefresh()
     } catch (e) {
-      setError(e.message)
+      setError(e instanceof Error ? e.message : 'Error desconocido')
     }
   }
 

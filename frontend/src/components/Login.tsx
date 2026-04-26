@@ -1,6 +1,11 @@
 import { GoogleLogin } from '@react-oauth/google'
+import type { CredentialResponse } from '@react-oauth/google'
 
-export default function Login({ onLogin }) {
+interface LoginProps {
+  onLogin: (response: CredentialResponse) => void
+}
+
+export default function Login({ onLogin }: LoginProps) {
   return (
     <div className="login-screen">
       <div className="login-card">
