@@ -108,8 +108,14 @@ app.MapPost("/players", async (CreatePlayerRequest request, AppDbContext db, Htt
     if (await db.Players.AnyAsync(p => p.UserId == userId && p.Name == request.Name))
         return Results.Conflict();
 
-    var email = ctx.User.FindFirst("email")?.Value;
-    var entity = new PlayerEntity { UserId = userId, Name = request.Name, Level = request.Level, Email = email };
+    if (!await db.Users.AnyAsync(u => u.Id == userId))
+    {
+        var email = ctx.User.FindFirst("email")?.Value ?? "";
+        var name = ctx.User.FindFirst("name")?.Value ?? email;
+        db.Users.Add(new UserEntity { Id = userId, Email = email, Name = name });
+    }
+
+    var entity = new PlayerEntity { UserId = userId, Name = request.Name, Level = request.Level };
     db.Players.Add(entity);
     await db.SaveChangesAsync();
     return Results.Created($"/players/{entity.Name}", new PlayerResponse(entity.Name, entity.Level));
