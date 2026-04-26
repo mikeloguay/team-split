@@ -412,3 +412,6 @@ frontend/dist/
 *.db-wal
 
 .env.*
+
+# Claude Code local settings
+.claude/settings.local.json
