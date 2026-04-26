@@ -348,11 +348,22 @@ tbody td { padding: 0.6rem 0.5rem; }
   color: #6b7280;
 }
 
-/* User info in header */
-.user-info {
+/* User menu */
+.user-menu {
+  position: relative;
+}
+
+.user-menu-trigger {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+}
+
+.user-menu-trigger:hover {
+  background: none;
 }
 
 .avatar {
@@ -360,6 +371,52 @@ tbody td { padding: 0.6rem 0.5rem; }
   height: 2rem;
   border-radius: 50%;
   border: 2px solid #4ade80;
+  display: block;
+}
+
+.user-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: white;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  min-width: 160px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.user-menu-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+  padding: 0.25rem 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-menu-divider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 0.125rem 0;
+}
+
+.user-menu-dropdown button {
+  width: 100%;
+  justify-content: flex-start;
+  font-size: 0.875rem;
+  color: #dc2626;
+  border-color: transparent;
+}
+
+.user-menu-dropdown button:hover:not(:disabled) {
+  background: #fef2f2;
+  border-color: transparent;
 }
 
 /* Mobile */

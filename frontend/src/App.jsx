@@ -23,7 +23,11 @@ function usePath() {
 
 function parseJwt(token) {
   const payload = token.split('.')[1]
-  return JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')))
+  const bytes = Uint8Array.from(
+    atob(payload.replace(/-/g, '+').replace(/_/g, '/')),
+    (c) => c.charCodeAt(0),
+  )
+  return JSON.parse(new TextDecoder().decode(bytes))
 }
 
 export default function App() {
@@ -32,6 +36,7 @@ export default function App() {
   const [playersLoading, setPlayersLoading] = useState(false)
   const [error, setError] = useState(null)
   const [user, setUser] = useState(null)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const logout = useCallback(() => {
     setUser(null)
@@ -57,6 +62,13 @@ export default function App() {
     if (user) loadPlayers()
   }, [user, loadPlayers])
 
+  useEffect(() => {
+    if (!menuOpen) return
+    const close = () => setMenuOpen(false)
+    document.addEventListener('click', close)
+    return () => document.removeEventListener('click', close)
+  }, [menuOpen])
+
   function handleLogin({ credential }) {
     const payload = parseJwt(credential)
     setUser({ name: payload.name, picture: payload.picture })
@@ -79,9 +91,21 @@ export default function App() {
             Jugadores
           </button>
         </nav>
-        <div className="user-info">
-          {user.picture && <img src={user.picture} alt={user.name} className="avatar" />}
-          <button onClick={logout}>Salir</button>
+        <div className="user-menu">
+          <button
+            className="user-menu-trigger"
+            onClick={(e) => { e.stopPropagation(); setMenuOpen((v) => !v) }}
+            aria-label="Menú de usuario"
+          >
+            {user.picture && <img src={user.picture} alt={user.name} className="avatar" />}
+          </button>
+          {menuOpen && (
+            <div className="user-menu-dropdown">
+              <span className="user-menu-name">{user.name}</span>
+              <hr className="user-menu-divider" />
+              <button onClick={logout}>Salir</button>
+            </div>
+          )}
         </div>
       </header>
 
