@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Shuffle } from 'lucide-react'
+import { Shuffle, Users } from 'lucide-react'
 import { splitTeams } from '../api'
 
-export default function Splitter({ players }) {
+export default function Splitter({ players, onGoToPlayers }) {
   const [selected, setSelected] = useState(new Set())
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
@@ -33,6 +33,19 @@ export default function Splitter({ players }) {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (players.length === 0) {
+    return (
+      <section className="empty-state">
+        <Users size={48} strokeWidth={1.5} />
+        <h2>No hay jugadores definidos</h2>
+        <p>Añade jugadores para poder hacer los equipos.</p>
+        <button className="split-btn" onClick={onGoToPlayers}>
+          Ir a Mis jugadores
+        </button>
+      </section>
+    )
   }
 
   return (
@@ -69,7 +82,7 @@ export default function Splitter({ players }) {
         disabled={selected.size < 2 || loading}
       >
         {loading ? <div className="spinner spinner-sm" /> : <Shuffle size={18} />}
-        {loading ? 'Dividiendo…' : `Dividir ${selected.size} jugadores`}
+        {loading ? 'Haciendo los equipos…' : `Hacer los equpos (${selected.size} jugadores)`}
       </button>
 
       {result && (

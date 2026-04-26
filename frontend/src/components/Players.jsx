@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Plus, Pencil, Trash2, Check, X } from 'lucide-react'
+import { Plus, Pencil, Trash2, Check, X, Shuffle } from 'lucide-react'
 import { createPlayer, updatePlayer, deletePlayer } from '../api'
 
-export default function Players({ players, onRefresh }) {
+export default function Players({ players, onRefresh, onGoHome }) {
   const [name, setName] = useState('')
   const [level, setLevel] = useState('')
   const [editing, setEditing] = useState(null)
@@ -127,6 +127,15 @@ export default function Players({ players, onRefresh }) {
           )}
         </tbody>
       </table>
+
+      <button
+        className="split-btn go-home-btn"
+        onClick={onGoHome}
+        disabled={players.length < 4}
+      >
+        <Shuffle size={18} />
+        Ir a hacer equipos
+      </button>
     </section>
   )
 }

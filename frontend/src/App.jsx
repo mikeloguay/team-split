@@ -109,10 +109,10 @@ export default function App() {
             {navOpen && (
               <div className="nav-menu-dropdown">
                 <button className={path === '/' ? 'active' : ''} onClick={() => goTo('/')}>
-                  Dividir
+                  Home
                 </button>
                 <button className={path === '/players' ? 'active' : ''} onClick={() => goTo('/players')}>
-                  Jugadores
+                  Mis jugadores
                 </button>
               </div>
             )}
@@ -145,8 +145,8 @@ export default function App() {
         </div>
       ) : (
         <>
-          {path === '/players' && <Players players={players} onRefresh={loadPlayers} />}
-          {path !== '/players' && <Splitter players={players} />}
+          {path === '/players' && <Players players={players} onRefresh={loadPlayers} onGoHome={() => goTo('/')} />}
+          {path !== '/players' && <Splitter players={players} onGoToPlayers={() => goTo('/players')} />}
         </>
       )}
     </div>
