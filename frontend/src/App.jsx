@@ -29,6 +29,7 @@ function parseJwt(token) {
 export default function App() {
   const [path, navigate] = usePath()
   const [players, setPlayers] = useState([])
+  const [playersLoading, setPlayersLoading] = useState(false)
   const [error, setError] = useState(null)
   const [user, setUser] = useState(null)
 
@@ -39,6 +40,7 @@ export default function App() {
   }, [])
 
   const loadPlayers = useCallback(async () => {
+    setPlayersLoading(true)
     try {
       const data = await getPlayers()
       setPlayers(data)
@@ -46,6 +48,8 @@ export default function App() {
     } catch (e) {
       if (e.message === 'UNAUTHORIZED') logout()
       else setError(e.message)
+    } finally {
+      setPlayersLoading(false)
     }
   }, [logout])
 
@@ -83,8 +87,17 @@ export default function App() {
 
       {error && <p className="error">{error}</p>}
 
-      {path === '/players' && <Players players={players} onRefresh={loadPlayers} />}
-      {path !== '/players' && <Splitter players={players} />}
+      {playersLoading && players.length === 0 ? (
+        <div className="loading-state">
+          <div className="spinner" />
+          Cargando jugadores…
+        </div>
+      ) : (
+        <>
+          {path === '/players' && <Players players={players} onRefresh={loadPlayers} />}
+          {path !== '/players' && <Splitter players={players} />}
+        </>
+      )}
     </div>
   )
 }

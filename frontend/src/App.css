@@ -278,6 +278,43 @@ tbody td { padding: 0.6rem 0.5rem; }
 .team li { padding: 0.35rem 0.75rem; }
 .team li:last-child { border-bottom: none; }
 
+/* Spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid #bbf7d0;
+  border-top-color: #16a34a;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+.spinner-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 2px;
+}
+
+.split-btn .spinner-sm {
+  border-color: rgba(255, 255, 255, 0.4);
+  border-top-color: white;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: #15803d;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
 /* Login screen */
 .login-screen {
   min-height: 100vh;

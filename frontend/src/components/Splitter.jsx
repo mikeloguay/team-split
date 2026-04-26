@@ -68,7 +68,7 @@ export default function Splitter({ players }) {
         onClick={handleSplit}
         disabled={selected.size < 2 || loading}
       >
-        <Shuffle size={18} />
+        {loading ? <div className="spinner spinner-sm" /> : <Shuffle size={18} />}
         {loading ? 'Dividiendo…' : `Dividir ${selected.size} jugadores`}
       </button>
 
