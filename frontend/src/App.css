@@ -165,7 +165,7 @@ input:focus {
 }
 
 .add-form input:first-child { flex: 1; }
-.add-form input[type='number'] { width: 110px; }
+.add-form input[type='number'] { width: 150px; }
 
 /* Inline edit form */
 .edit-form {

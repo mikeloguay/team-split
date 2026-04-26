@@ -1,51 +1,52 @@
 # Team Split
 
-Web application that takes a list of players and splits them into 2 balanced teams based on skill level.
+Web application that splits a list of team players into two balanced teams based on skill level.
 
-- Web: [teamsplit.onrender.com](https://teamsplit.onrender.com/)
-- API docs: [teamsplit-api.onrender.com/scalar](https://teamsplit-api.onrender.com/scalar/)
+- **Frontend:** https://teamsplit.onrender.com
+- **API docs:** https://teamsplit-api.onrender.com/scalar
 
-## Stack
+## Tech stack
 
-- **Backend:** ASP.NET Core 10 Minimal API — team-balancing algorithm with SQLite persistence
-- **Frontend:** React 19 + Vite — player management (add/edit/delete) and team splitting
+| Layer | Technology |
+|---|---|
+| Backend | ASP.NET Core 10 Minimal API |
+| Database | PostgreSQL + EF Core (Npgsql) |
+| Auth | Google OAuth 2.0 (JWT) |
+| Frontend | React 19 + TypeScript + Vite |
 
 ## Prerequisites
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- [Node.js LTS](https://nodejs.org/) (includes npm)
+- [Node.js LTS](https://nodejs.org/)
+- A PostgreSQL instance
+- A Google OAuth 2.0 client ID ([Google Cloud Console](https://console.cloud.google.com/))
+
+## Environment variables
+
+**Backend:** `DATABASE_URL`, `GOOGLE_CLIENT_ID`
+
+**Frontend:** `VITE_GOOGLE_CLIENT_ID` — create `frontend/.env.local`:
+```
+VITE_GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+```
 
 ## Running locally
 
-### Backend
-
-```powershell
+```bash
+# Backend — starts on http://localhost:8080
 dotnet run --project backend/TeamSplit.Api/TeamSplit.Api.csproj
+
+# Frontend — starts on http://localhost:7070
+cd frontend && npm install && npm run dev
 ```
-
-The API starts on `http://localhost:8080`. On first run it creates `teamsplit.db` and seeds it with the default player list.
-
-### Frontend
-
-```powershell
-cd frontend
-npm install
-npm run dev
-```
-
-Open `http://localhost:7070`. The frontend automatically points to `http://localhost:8080` when running on localhost.
 
 ## Other commands
 
-```powershell
-dotnet build backend      # build all backend projects
-dotnet test backend       # run backend tests
+```bash
+dotnet build backend
+dotnet test backend
 
 cd frontend
-npm run build             # production build → frontend/dist/
-npm run preview           # serve the production build on port 7070
+npm run build
+npm run preview
 ```
-
-## API
-
-Interactive docs at `http://localhost:8080/scalar` while the backend is running.
