@@ -1,6 +1,6 @@
 namespace TeamSplit;
 
-public static class PlayersDatabase
+public static class MockedPlayersDatabase
 {
     public static HashSet<Player> Players { get; } =
     [

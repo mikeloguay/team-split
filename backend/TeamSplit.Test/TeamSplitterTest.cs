@@ -238,7 +238,7 @@ public class TeamSplitterTest
     [Fact]
     public void TwentyTwoPlayers_Split_FastAndCorrect()
     {
-        var players = PlayersDatabase.Players;
+        var players = MockedPlayersDatabase.Players;
         Assert.Equal(22, players.Count);
 
         var sw = Stopwatch.StartNew();
