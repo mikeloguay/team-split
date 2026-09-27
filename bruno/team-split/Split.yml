@@ -1,0 +1,34 @@
+info:
+  name: Split
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{baseUrl}}/players/split"
+  body:
+    type: json
+    data: |-
+      {
+        "players":[
+            "Jose",
+            "Tito",
+            "Dani",
+            "Ale",
+            "DaniJ",
+            "Antonio",
+            "Canijo",
+            "Dani",
+            "Miki",
+            "Sergio",
+            "Iván"
+        ] 
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

@@ -1,0 +1,7 @@
+variables:
+  - name: baseUrl
+    value: https://teamsplit-api.onrender.com
+  - secret: true
+    name: googleClientId
+  - secret: true
+    name: googleClientSecret

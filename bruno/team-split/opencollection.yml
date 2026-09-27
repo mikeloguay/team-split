@@ -1,0 +1,35 @@
+opencollection: 1.0.0
+
+info:
+  name: team-split
+
+request:
+  auth:
+    type: oauth2
+    flow: authorization_code
+    authorizationUrl: https://accounts.google.com/o/oauth2/v2/auth
+    accessTokenUrl: https://oauth2.googleapis.com/token
+    callbackUrl: http://localhost:8888
+    credentials:
+      clientId: "{{googleClientId}}"
+      clientSecret: "{{googleClientSecret}}"
+      placement: basic_auth_header
+    scope: openid email profile
+    pkce: {}
+    tokenConfig:
+      id: credentials
+      placement:
+        header: Bearer
+      source: access_token
+    settings:
+      autoFetchToken: true
+      autoRefreshToken: false
+  variables:
+    - name: baseUrl
+      value: http://localhost:8080
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git
