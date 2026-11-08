@@ -415,3 +415,6 @@ frontend/dist/
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# Local secrets (PATs) - never commit
+secrets.env
